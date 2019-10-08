@@ -13,18 +13,20 @@ func TestMysql(t *testing.T) {
 		So(m, ShouldNotBeNil)
 
 		article := &Article{
-			Title:   "标题1",
-			Author:  666,
-			Content: "hello world",
+			Title:    "标题1",
+			AuthorID: 666,
+			Author:   "hatlonely",
+			Content:  "hello world",
 		}
 
 		for i := 0; i < 20; i++ {
 			So(m.db.Delete(&Article{ID: i + 1}).Error, ShouldBeNil)
 			So(m.db.Create(&Article{
-				ID:      i + 1,
-				Author:  article.Author,
-				Title:   fmt.Sprintf("%s-%v", article.Title, i+1),
-				Content: article.Content,
+				ID:       i + 1,
+				AuthorID: article.AuthorID,
+				Author:   article.Author,
+				Title:    fmt.Sprintf("%s-%v", article.Title, i+1),
+				Content:  article.Content,
 			}).Error, ShouldBeNil)
 		}
 
@@ -36,6 +38,7 @@ func TestMysql(t *testing.T) {
 				for i := 0; i < 10; i++ {
 					So(as[i].ID, ShouldEqual, i+1)
 					So(as[i].Title, ShouldEqual, fmt.Sprintf("%s-%v", article.Title, i+1))
+					So(as[i].AuthorID, ShouldEqual, article.AuthorID)
 					So(as[i].Author, ShouldEqual, article.Author)
 				}
 			}
@@ -46,6 +49,7 @@ func TestMysql(t *testing.T) {
 				for i := 0; i < 10; i++ {
 					So(as[i].ID, ShouldEqual, i+11)
 					So(as[i].Title, ShouldEqual, fmt.Sprintf("%s-%v", article.Title, i+11))
+					So(as[i].AuthorID, ShouldEqual, article.AuthorID)
 					So(as[i].Author, ShouldEqual, article.Author)
 				}
 			}
@@ -57,8 +61,9 @@ func TestMysql(t *testing.T) {
 				So(err, ShouldBeNil)
 				So(a.ID, ShouldEqual, i+1)
 				So(a.Title, ShouldEqual, fmt.Sprintf("%s-%v", article.Title, i+1))
-				So(a.Author, ShouldEqual, article.Author)
+				So(a.AuthorID, ShouldEqual, article.AuthorID)
 				So(a.Content, ShouldEqual, article.Content)
+				So(a.Author, ShouldEqual, article.Author)
 			}
 
 			a, err := m.SelectArticleByID(21)

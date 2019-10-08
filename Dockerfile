@@ -1,6 +1,6 @@
 FROM centos:centos7
-COPY docker/go-ancient /var/docker/go-ancient
-RUN mkdir -p /var/docker/go-ancient/log
+COPY docker/go-tech /var/docker/go-tech
+RUN mkdir -p /var/docker/go-tech/log
 EXPOSE 6062
-WORKDIR /var/docker/go-ancient
-CMD [ "bin/ancient", "-c", "configs/ancient.json" ]
+WORKDIR /var/docker/go-tech
+CMD [ "bin/tech", "-c", "configs/tech.json" ]

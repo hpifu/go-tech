@@ -8,7 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hpifu/go-kit/logger"
-	"github.com/hpifu/tpl-go-http/internal/service"
+	"github.com/hpifu/go-tech/internal/mysql"
+	"github.com/hpifu/go-tech/internal/service"
 	"github.com/spf13/viper"
 )
 
@@ -17,7 +18,7 @@ var AppVersion = "unknown"
 
 func main() {
 	version := flag.Bool("v", false, "print current version")
-	configfile := flag.String("c", "configs/echo.json", "config file path")
+	configfile := flag.String("c", "configs/tech.json", "config file path")
 	flag.Parse()
 	if *version {
 		fmt.Println(AppVersion)
@@ -56,11 +57,18 @@ func main() {
 	service.WarnLog = warnLog
 	service.AccessLog = accessLog
 
+	// init mysqldb
+	db, err := mysql.NewMysql(config.GetString("mysqldb.uri"))
+	if err != nil {
+		panic(err)
+	}
+	infoLog.Infof("init mysqldb success. uri [%v]", config.GetString("mysqldb.uri"))
+
 	secure := config.GetBool("service.cookieSecure")
 	domain := config.GetString("service.cookieDomain")
 	origin := config.GetString("service.allowOrigin")
 	// init services
-	svc := service.NewService(secure, domain)
+	svc := service.NewService(secure, domain, db)
 
 	// init gin
 	gin.SetMode(gin.ReleaseMode)
@@ -85,6 +93,8 @@ func main() {
 		ctx.String(200, "ok")
 	})
 	r.GET("/echo", service.Decorator(svc.Echo))
+	r.GET("/article", service.Decorator(svc.GETArticles))
+	r.GET("/article/:id", service.Decorator(svc.GETArticle))
 
 	infoLog.Infof("%v init success, port [%v]", os.Args[0], config.GetString("service.port"))
 

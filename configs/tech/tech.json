@@ -1,0 +1,25 @@
+{
+    "service": {
+        "port": ":6063",
+        "allowOrigin": "https://tech.hatlonely.com",
+        "cookieSecure": true,
+        "cookieDomain": "tech.hatlonely.com"
+    },
+    "mysqldb": {
+        "uri": "hatlonely:keaiduo1@tcp(mysql:3306)/article?charset=utf8&parseTime=True&loc=Local"
+    },
+    "logger": {
+        "infoLog": {
+            "filename": "log/tech.info",
+            "maxAge": "24h"
+        },
+        "warnLog": {
+            "filename": "log/tech.warn",
+            "maxAge": "24h"
+        },
+        "accessLog": {
+            "filename": "log/tech.access",
+            "maxAge": "24h"
+        }
+    }
+}

@@ -1,4 +1,4 @@
-module github.com/hpifu/tpl-go-http
+module github.com/hpifu/go-tech
 
 go 1.12
 

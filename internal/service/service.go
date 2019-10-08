@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/hpifu/go-tech/internal/mysql"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -22,15 +24,18 @@ func init() {
 type Service struct {
 	secure bool
 	domain string
+	db     *mysql.Mysql
 }
 
 func NewService(
 	secure bool,
 	domain string,
+	db *mysql.Mysql,
 ) *Service {
 	return &Service{
 		secure: secure,
 		domain: domain,
+		db:     db,
 	}
 }
 

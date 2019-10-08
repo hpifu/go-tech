@@ -1,7 +1,7 @@
-binary=echo
+binary=tech
 dockeruser=hatlonely
 gituser=hpifu
-repository=tpl-go-http
+repository=go-tech
 version=$(shell git describe --tags)
 
 export GOPATH=$(shell pwd)/../../../../
