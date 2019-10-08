@@ -5,9 +5,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/hpifu/go-tech/internal/mysql"
-
 	"github.com/gin-gonic/gin"
+	"github.com/hpifu/go-tech/internal/mysql"
 	"github.com/sirupsen/logrus"
 )
 
