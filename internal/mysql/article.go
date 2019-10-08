@@ -40,3 +40,7 @@ func (m *Mysql) SelectArticleByID(id int) (*Article, error) {
 
 	return article, nil
 }
+
+func (m *Mysql) InsertArticle(article *Article) error {
+	return m.db.Create(article).Error
+}
