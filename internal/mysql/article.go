@@ -10,7 +10,7 @@ type Article struct {
 	Author  int       `gorm:"type:bigint(20);index:author_idx;default:0" json:"author,omitempty"`
 	Title   string    `gorm:"type:varchar(128);index:title_idx" json:"title,omitempty"`
 	Content string    `gorm:"type:longtext COLLATE utf8mb4_unicode_520_ci;not null" json:"content,omitempty"`
-	CTime   time.Time `gorm:"type:timestamp;column:ctime;default:'1970-01-01 08:00:00'" json:"ctime,omitempty"`
+	CTime   time.Time `gorm:"type:timestamp;column:ctime;default:'1970-01-01 00:00:01'" json:"ctime,omitempty"`
 	UTime   time.Time `gorm:"type:timestamp;column:utime;default:CURRENT_TIMESTAMP" json:"utime,omitempty"`
 }
 
