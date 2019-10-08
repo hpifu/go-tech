@@ -18,11 +18,11 @@ func NewMysql(uri string) (*Mysql, error) {
 		return nil, err
 	}
 
-	//if !db.HasTable(&Account{}) {
-	//	if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").CreateTable(&Account{}).Error; err != nil {
-	//		panic(err)
-	//	}
-	//}
+	if !db.HasTable(&Article{}) {
+		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").CreateTable(&Article{}).Error; err != nil {
+			panic(err)
+		}
+	}
 
 	// 服务器主动断开连接，报 "invalid connection" 错误
 	// 临时解决方案，设置短一点连接时间，主动重连

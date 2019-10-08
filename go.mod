@@ -27,5 +27,6 @@ require (
 	github.com/hpifu/go-kit v1.3.0
 	github.com/jinzhu/gorm v1.9.8
 	github.com/sirupsen/logrus v1.4.2
+	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 	github.com/spf13/viper v1.4.0
 )
