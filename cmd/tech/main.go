@@ -94,6 +94,7 @@ func main() {
 	})
 	r.GET("/article", service.Decorator(svc.GETArticles))
 	r.GET("/article/:id", service.Decorator(svc.GETArticle))
+	r.POST("/article", service.Decorator(svc.POSTArticle))
 
 	infoLog.Infof("%v init success, port [%v]", os.Args[0], config.GetString("service.port"))
 

@@ -11,7 +11,7 @@ type Article struct {
 	Author   string    `gorm:"type:varchar(64);index:author_id_idx;default:''" json:"author,omitempty"`
 	Title    string    `gorm:"type:varchar(128);index:title_idx" json:"title,omitempty"`
 	Content  string    `gorm:"type:longtext COLLATE utf8mb4_unicode_520_ci;not null" json:"content,omitempty"`
-	CTime    time.Time `gorm:"type:timestamp;column:ctime;default:'1970-01-01 00:00:01'" json:"ctime,omitempty"`
+	CTime    time.Time `gorm:"type:timestamp;column:ctime;default:CURRENT_TIMESTAMP" json:"ctime,omitempty"`
 	UTime    time.Time `gorm:"type:timestamp;column:utime;default:CURRENT_TIMESTAMP" json:"utime,omitempty"`
 }
 
