@@ -25,7 +25,7 @@ func (s *Service) GETArticles(c *gin.Context) (interface{}, interface{}, int, er
 
 	articles, err := s.db.SelectArticles(req.Offset, req.Limit)
 	if err != nil {
-		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select ancients failed. err: [%v]", err)
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select articles failed. err: [%v]", err)
 	}
 
 	if articles == nil {

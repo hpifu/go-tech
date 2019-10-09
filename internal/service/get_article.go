@@ -2,8 +2,9 @@ package service
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ArticleReq struct {
@@ -20,7 +21,7 @@ func (s *Service) GETArticle(c *gin.Context) (interface{}, interface{}, int, err
 	article, err := s.db.SelectArticleByID(req.ID)
 
 	if err != nil {
-		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select ancient failed. err: [%v]", err)
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
 
 	if article == nil {

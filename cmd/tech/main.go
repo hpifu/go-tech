@@ -92,7 +92,6 @@ func main() {
 	r.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(200, "ok")
 	})
-	r.GET("/echo", service.Decorator(svc.Echo))
 	r.GET("/article", service.Decorator(svc.GETArticles))
 	r.GET("/article/:id", service.Decorator(svc.GETArticle))
 
