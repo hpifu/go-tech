@@ -45,5 +45,5 @@ Feature: article 测试
         Then http 检查 204
         Given mysql 执行
             """
-            DELETE FROM ancients WHERE id IN (1,2)
+            DELETE FROM articles WHERE id IN (1,2)
             """
