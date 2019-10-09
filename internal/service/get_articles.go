@@ -32,5 +32,15 @@ func (s *Service) GETArticles(c *gin.Context) (interface{}, interface{}, int, er
 		return req, nil, http.StatusNoContent, nil
 	}
 
-	return req, articles, http.StatusOK, nil
+	var as []*Article
+	for _, article := range articles {
+		as = append(as, &Article{
+			ID:       article.ID,
+			AuthorID: article.AuthorID,
+			Author:   article.Author,
+			Title:    article.Title,
+		})
+	}
+
+	return req, as, http.StatusOK, nil
 }

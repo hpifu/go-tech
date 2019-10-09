@@ -1,8 +1,9 @@
 package mysql
 
 import (
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 type Article struct {

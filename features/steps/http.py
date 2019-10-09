@@ -7,6 +7,17 @@ import requests
 import json
 
 
+def check(obj1, obj2):
+    if isinstance(obj2, dict):
+        for key in obj2:
+            check(obj1[key], obj2[key])
+    elif isinstance(obj2, list):
+        for idx, val in enumerate(obj2):
+            check(obj1[idx], val)
+    else:
+        assert_that(obj1, equal_to(obj2))
+
+
 @when('http 请求 {method:str} {path:str}')
 def step_impl(context, method, path):
     if context.text:
@@ -54,15 +65,7 @@ def step_impl(context, status):
 
     if "json" in obj:
         result = json.loads(res.text)
-        print(type(obj["json"]))
-        if isinstance(obj["json"], dict):
-            for key in obj["json"]:
-                assert_that(result[key], equal_to(obj["json"][key]))
-        elif isinstance(obj["json"], list):
-            for idx, val in enumerate(obj["json"]):
-                assert_that(result[idx], equal_to(val))
-        else:
-            assert_that(result, equal_to(obj["json"]))
+        check(result, obj["json"])
 
     if "text" in obj:
         assert_that(res.text, equal_to(obj["text"].strip()))

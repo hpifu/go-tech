@@ -10,6 +10,7 @@ import (
 )
 
 type Article struct {
+	ID       int    `json:"id,omitempty"`
 	AuthorID int    `form:"authorID" json:"authorID,omitempty"`
 	Author   string `form:"author" json:"author,omitempty"`
 	Title    string `form:"title" json:"title,omitempty"`
