@@ -1,4 +1,5 @@
 FROM centos:centos7
+RUN timedatectl set-timezone Asia/Shanghai
 COPY docker/go-tech /var/docker/go-tech
 RUN mkdir -p /var/docker/go-tech/log
 EXPOSE 6062
