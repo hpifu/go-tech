@@ -51,12 +51,22 @@ def step_impl(context, status):
     else:
         obj = {}
     assert_that(res.status_code, equal_to(status))
+
     if "json" in obj:
         result = json.loads(res.text)
-        for key in obj["json"]:
-            assert_that(result[key], equal_to(obj["json"][key]))
+        print(type(obj["json"]))
+        if isinstance(obj["json"], dict):
+            for key in obj["json"]:
+                assert_that(result[key], equal_to(obj["json"][key]))
+        elif isinstance(obj["json"], list):
+            for idx, val in enumerate(obj["json"]):
+                assert_that(result[idx], equal_to(val))
+        else:
+            assert_that(result, equal_to(obj["json"]))
+
     if "text" in obj:
         assert_that(res.text, equal_to(obj["text"].strip()))
+
     if "cookies" in obj:
         for key in obj["cookies"]:
             cookies = res.cookies

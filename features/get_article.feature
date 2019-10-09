@@ -3,7 +3,7 @@ Feature: article 测试
     Scenario: article
         Given mysql 执行
             """
-            DELETE FROM articles WHERE id IN (1,2)
+            DELETE FROM articles WHERE id IN (1,2,3)
             """
         Given mysql 执行
             """
@@ -41,6 +41,8 @@ Feature: article 测试
                 }
             }
             """
+        When http 请求 GET /article/3
+        Then http 检查 204
         Given mysql 执行
             """
             DELETE FROM ancients WHERE id IN (1,2)
