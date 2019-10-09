@@ -8,7 +8,7 @@ import (
 )
 
 type ArticleReq struct {
-	ID int `uri:"id"`
+	ID int `uri:"id" json:"id"`
 }
 
 func (s *Service) GETArticle(c *gin.Context) (interface{}, interface{}, int, error) {

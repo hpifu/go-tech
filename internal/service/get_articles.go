@@ -8,8 +8,8 @@ import (
 )
 
 type ArticlesReq struct {
-	Offset int `form:"offset"`
-	Limit  int `form:"limit"`
+	Offset int `form:"offset" json:"offset"`
+	Limit  int `form:"limit" json:"limit"`
 }
 
 func (s *Service) GETArticles(c *gin.Context) (interface{}, interface{}, int, error) {
