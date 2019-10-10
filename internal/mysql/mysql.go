@@ -1,9 +1,10 @@
 package mysql
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"time"
 )
 
 // Mysql db
@@ -19,7 +20,7 @@ func NewMysql(uri string) (*Mysql, error) {
 	}
 
 	if !db.HasTable(&Article{}) {
-		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").CreateTable(&Article{}).Error; err != nil {
+		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&Article{}).Error; err != nil {
 			panic(err)
 		}
 	}
