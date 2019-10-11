@@ -8,9 +8,10 @@ import (
 
 type Article struct {
 	ID       int       `gorm:"type:bigint(20) auto_increment;primary_key" json:"id"`
-	AuthorID int       `gorm:"type:bigint(20);index:author_idx;default:0" json:"authorID,omitempty"`
-	Author   string    `gorm:"type:varchar(64);index:author_id_idx;default:''" json:"author,omitempty"`
-	Title    string    `gorm:"type:varchar(128);index:title_idx" json:"title,omitempty"`
+	Author   string    `gorm:"type:varchar(64);index:author_idx;default:''" json:"author,omitempty"`
+	AuthorID int       `gorm:"type:bigint(20);unique_index:author_title_idx;default:0" json:"authorID,omitempty"`
+	Title    string    `gorm:"type:varchar(128);unique_index:author_title_idx;not null" json:"title,omitempty"`
+	Tags     string    `gorm:"type:varchar(256);default:''" json:"tags,omitempty"`
 	Content  string    `gorm:"type:longtext COLLATE utf8mb4_unicode_520_ci;not null" json:"content,omitempty"`
 	CTime    time.Time `gorm:"type:timestamp;column:ctime;default:CURRENT_TIMESTAMP" json:"ctime,omitempty"`
 	UTime    time.Time `gorm:"type:timestamp;column:utime;default:CURRENT_TIMESTAMP" json:"utime,omitempty"`
