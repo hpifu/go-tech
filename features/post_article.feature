@@ -11,6 +11,10 @@ Feature: POST /article
                 "json": {
                     "title": "标题1",
                     "authorID": 666,
+                    "tags": [
+                        "c++",
+                        "java"
+                    ],
                     "author": "hatlonely",
                     "content": "hello world"
                 }
@@ -22,6 +26,7 @@ Feature: POST /article
             {
                 "title": "标题1",
                 "author_id": 666,
+                "tags": "c++, java",
                 "author": "hatlonely",
                 "content": "hello world"
             }

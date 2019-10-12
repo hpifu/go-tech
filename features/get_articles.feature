@@ -32,13 +32,15 @@ Feature: articles 测试
                         "id": 1,
                         "title": "标题1",
                         "authorID": 666,
-                        "author": "hatlonely"
+                        "author": "hatlonely",
+                        "content": "hello world"
                     },
                     {
                         "id": 2,
                         "title": "标题2",
                         "authorID": 666,
-                        "author": "hatlonely"
+                        "author": "hatlonely",
+                        "content": "hello world"
                     }
                 ]
             }

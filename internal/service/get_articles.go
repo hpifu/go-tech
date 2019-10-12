@@ -3,6 +3,8 @@ package service
 import (
 	"fmt"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,6 +41,10 @@ func (s *Service) GETArticles(c *gin.Context) (interface{}, interface{}, int, er
 			AuthorID: article.AuthorID,
 			Author:   article.Author,
 			Title:    article.Title,
+			Tags:     strings.Split(article.Tags, ","),
+			Content:  article.Content,
+			CTime:    article.CTime.Format(time.RFC3339),
+			UTime:    article.UTime.Format(time.RFC3339),
 		})
 	}
 

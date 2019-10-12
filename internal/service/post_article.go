@@ -3,6 +3,8 @@ package service
 import (
 	"fmt"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hpifu/go-kit/rule"
@@ -10,11 +12,14 @@ import (
 )
 
 type Article struct {
-	ID       int    `json:"id,omitempty"`
-	AuthorID int    `form:"authorID" json:"authorID,omitempty"`
-	Author   string `form:"author" json:"author,omitempty"`
-	Title    string `form:"title" json:"title,omitempty"`
-	Content  string `form:"content" json:"content,omitempty"`
+	ID       int      `json:"id,omitempty"`
+	AuthorID int      `form:"authorID" json:"authorID,omitempty"`
+	Author   string   `form:"author" json:"author,omitempty"`
+	Title    string   `form:"title" json:"title,omitempty"`
+	Tags     []string `form:"tags" json:"tags,omitempty"`
+	Content  string   `form:"content" json:"content,omitempty"`
+	CTime    string   `json:"ctime,omitempty"`
+	UTime    string   `json:"utime,omitempty"`
 }
 
 type POSTArticleReq Article
@@ -35,8 +40,11 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 	if err := s.db.InsertArticle(&mysql.Article{
 		AuthorID: req.AuthorID,
 		Author:   req.Author,
+		Tags:     strings.Join(req.Tags, ", "),
 		Title:    req.Title,
 		Content:  req.Content,
+		CTime:    time.Now(),
+		UTime:    time.Now(),
 	}); err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql insert article failed. err: [%v]", err)
 	}
