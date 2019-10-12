@@ -5,15 +5,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var InfoLog *logrus.Logger
-var WarnLog *logrus.Logger
-var AccessLog *logrus.Logger
-
-func init() {
-	InfoLog = logrus.New()
-	WarnLog = logrus.New()
-	AccessLog = logrus.New()
-}
+var InfoLog *logrus.Logger = logrus.New()
+var WarnLog *logrus.Logger = logrus.New()
+var AccessLog *logrus.Logger = logrus.New()
 
 type Service struct {
 	secure bool
