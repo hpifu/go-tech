@@ -44,7 +44,7 @@ func TestMysql(t *testing.T) {
 				}
 			}
 			{
-				as, err := m.SelectArticles(10, 20)
+				as, err := m.SelectArticles(10, 10)
 				So(err, ShouldBeNil)
 				So(len(as), ShouldEqual, 10)
 				for i := 0; i < 10; i++ {
