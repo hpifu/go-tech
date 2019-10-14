@@ -80,27 +80,27 @@ func TestMysql_UpdateArticle(t *testing.T) {
 		So(err, ShouldBeNil)
 		So(m, ShouldNotBeNil)
 
-		So(m.db.Delete(&Article{ID: 123}).Error, ShouldBeNil)
+		So(m.db.Delete(&Article{ID: 12}).Error, ShouldBeNil)
 		So(m.db.Create(&Article{
-			ID:       123,
+			ID:       12,
 			AuthorID: 456,
 			Author:   "hatlonely",
-			Title:    "标题123",
+			Title:    "标题12",
 			Content:  "hello world",
 		}).Error, ShouldBeNil)
 
 		Convey("update article", func() {
 			err := m.UpdateArticle(&Article{
-				ID:      123,
-				Title:   "标题1234",
+				ID:      12,
+				Title:   "标题124",
 				Content: "hello golang",
 			})
 			So(err, ShouldBeNil)
 
 			article := &Article{}
-			So(m.db.Where("id=?", 123).First(article).Error, ShouldBeNil)
-			So(article.ID, ShouldEqual, 123)
-			So(article.Title, ShouldEqual, "标题1234")
+			So(m.db.Where("id=?", 12).First(article).Error, ShouldBeNil)
+			So(article.ID, ShouldEqual, 12)
+			So(article.Title, ShouldEqual, "标题124")
 			So(article.Content, ShouldEqual, "hello golang")
 		})
 	})
