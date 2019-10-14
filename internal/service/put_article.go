@@ -62,7 +62,6 @@ func (s *Service) PUTArticle(c *gin.Context) (interface{}, interface{}, int, err
 		Tags:    strings.Join(req.Tags, ","),
 		Title:   req.Title,
 		Content: req.Content,
-		CTime:   time.Now(),
 		UTime:   time.Now(),
 	}); err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql update article failed. err: [%v]", err)
