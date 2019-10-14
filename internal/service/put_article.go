@@ -26,7 +26,7 @@ func (s *Service) PUTArticle(c *gin.Context) (interface{}, interface{}, int, err
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}
 	if account == nil {
-		return req, nil, http.StatusForbidden, fmt.Errorf("access deny")
+		return req, "没有该资源权限", http.StatusForbidden, nil
 	}
 
 	// bind req
@@ -47,11 +47,11 @@ func (s *Service) PUTArticle(c *gin.Context) (interface{}, interface{}, int, err
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
 	if article == nil {
-		return req, nil, http.StatusBadRequest, fmt.Errorf("no such article")
+		return req, "未找到该资源", http.StatusBadRequest, nil
 	}
 
 	if article.AuthorID != account.ID {
-		return req, nil, http.StatusForbidden, fmt.Errorf("access deny")
+		return req, "没有该资源权限", http.StatusForbidden, nil
 	}
 
 	req.Author = strings.Split(account.Email, "@")[0]

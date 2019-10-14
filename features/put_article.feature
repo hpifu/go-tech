@@ -107,7 +107,7 @@ Feature: PUT /article
         Then http 检查 403
             """
             {
-                "text": "access deny"
+                "text": "没有该资源权限"
             }
             """
         Given mysql 执行
@@ -149,7 +149,7 @@ Feature: PUT /article
         Then http 检查 403
             """
             {
-                "text": "access deny"
+                "text": "没有该资源权限"
             }
             """
         Given mysql 执行
