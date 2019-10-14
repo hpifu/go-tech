@@ -25,26 +25,6 @@ Feature: articles 测试
             }
             """
         Then http 检查 200
-            """
-            {
-                "json": [
-                    {
-                        "id": 1,
-                        "title": "标题1",
-                        "authorID": 666,
-                        "author": "hatlonely",
-                        "content": "hello world"
-                    },
-                    {
-                        "id": 2,
-                        "title": "标题2",
-                        "authorID": 666,
-                        "author": "hatlonely",
-                        "content": "hello world"
-                    }
-                ]
-            }
-            """
         Given mysql 执行
             """
             DELETE FROM articles WHERE id IN (1,2)

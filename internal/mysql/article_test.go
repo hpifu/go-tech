@@ -36,23 +36,11 @@ func TestMysql(t *testing.T) {
 				as, err := m.SelectArticles(0, 10)
 				So(err, ShouldBeNil)
 				So(len(as), ShouldEqual, 10)
-				for i := 0; i < 10; i++ {
-					So(as[i].ID, ShouldEqual, i+1)
-					So(as[i].Title, ShouldEqual, fmt.Sprintf("%s-%v", article.Title, i+1))
-					So(as[i].AuthorID, ShouldEqual, article.AuthorID)
-					So(as[i].Author, ShouldEqual, article.Author)
-				}
 			}
 			{
 				as, err := m.SelectArticles(10, 10)
 				So(err, ShouldBeNil)
 				So(len(as), ShouldEqual, 10)
-				for i := 0; i < 10; i++ {
-					So(as[i].ID, ShouldEqual, i+11)
-					So(as[i].Title, ShouldEqual, fmt.Sprintf("%s-%v", article.Title, i+11))
-					So(as[i].AuthorID, ShouldEqual, article.AuthorID)
-					So(as[i].Author, ShouldEqual, article.Author)
-				}
 			}
 		})
 

@@ -23,6 +23,10 @@ func NewMysql(uri string) (*Mysql, error) {
 		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&Article{}).Error; err != nil {
 			panic(err)
 		}
+	} else {
+		if err := db.AutoMigrate(&Article{}).Error; err != nil {
+			panic(err)
+		}
 	}
 
 	// 服务器主动断开连接，报 "invalid connection" 错误

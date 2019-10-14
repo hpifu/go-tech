@@ -19,6 +19,10 @@ func (s *Service) DELETEArticle(c *gin.Context) (interface{}, interface{}, int, 
 		Token: c.GetHeader("Authorization"),
 	}
 
+	if req.Token == "" {
+		return req, "验证信息有误", http.StatusBadRequest, nil
+	}
+
 	// select account
 	account, err := s.getAccount(req.Token)
 	if err != nil {
