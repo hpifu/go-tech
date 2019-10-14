@@ -20,14 +20,12 @@ config = {
     "prefix": "output/go-tech",
     "service": {
         "port": 16063,
-        "cookieSecure": False,
         "allowOrigins": ["http://127.0.0.1:4000"],
-        "cookieDomain": "127.0.0.1"
     },
     "api": {
         "account": "test-go-account:16060",
     },
-    "mysqldb": {
+    "mysql": {
         "host": "test-mysql",
         "port": 3306,
         "user": "hatlonely",
@@ -60,16 +58,14 @@ def deploy():
     cf = json.loads(fp.read())
     fp.close()
     cf["service"]["port"] = ":{}".format(config["service"]["port"])
-    cf["service"]["cookieSecure"] = config["service"]["cookieSecure"]
-    cf["service"]["cookieDomain"] = config["service"]["cookieDomain"]
     cf["service"]["allowOrigins"] = config["service"]["allowOrigins"]
-    # cf["api"]["account"] = config["api"]["account"]
-    cf["mysqldb"]["uri"] = "{user}:{password}@tcp({host}:{port})/{db}?charset=utf8&parseTime=True&loc=Local".format(
-        user=config["mysqldb"]["user"],
-        password=config["mysqldb"]["password"],
-        db=config["mysqldb"]["db"],
-        host=config["mysqldb"]["host"],
-        port=config["mysqldb"]["port"],
+    cf["api"]["account"] = config["api"]["account"]
+    cf["mysql"]["uri"] = "{user}:{password}@tcp({host}:{port})/{db}?charset=utf8&parseTime=True&loc=Local".format(
+        user=config["mysql"]["user"],
+        password=config["mysql"]["password"],
+        db=config["mysql"]["db"],
+        host=config["mysql"]["host"],
+        port=config["mysql"]["port"],
     )
     print(cf)
     fp = open("{}/configs/tech.json".format(config["prefix"]), "w")
@@ -97,11 +93,11 @@ def before_all(context):
     start()
     context.config = config
     context.mysql_conn = pymysql.connect(
-        host=config["mysqldb"]["host"],
-        user=config["mysqldb"]["user"],
-        port=config["mysqldb"]["port"],
-        password=config["mysqldb"]["password"],
-        db=config["mysqldb"]["db"],
+        host=config["mysql"]["host"],
+        user=config["mysql"]["user"],
+        port=config["mysql"]["port"],
+        password=config["mysql"]["password"],
+        db=config["mysql"]["db"],
         charset="utf8",
         cursorclass=pymysql.cursors.DictCursor
     )

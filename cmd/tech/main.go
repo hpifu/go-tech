@@ -65,20 +65,24 @@ func main() {
 	service.WarnLog = warnLog
 	service.AccessLog = accessLog
 
-	// init mysqldb
-	db, err := mysql.NewMysql(config.GetString("mysqldb.uri"))
+	// init mysql
+	db, err := mysql.NewMysql(config.GetString("mysql.uri"))
 	if err != nil {
 		panic(err)
 	}
-	infoLog.Infof("init mysqldb success. uri [%v]", config.GetString("mysqldb.uri"))
+	infoLog.Infof("init mysql success. uri [%v]", config.GetString("mysql.uri"))
 
-	secure := config.GetBool("service.cookieSecure")
-	domain := config.GetString("service.cookieDomain")
-	origins := config.GetStringSlice("service.allowOrigins")
+	// init http client
+	client := hhttp.NewHttpClient(
+		config.GetInt("pool.maxConn"),
+		config.GetDuration("pool.connTimeout"),
+		config.GetDuration("pool.recvTimeout"),
+	)
 	// init services
-	svc := service.NewService(secure, domain, db)
+	svc := service.NewService(db, client, config.GetString("api.account"))
 
 	// init gin
+	origins := config.GetStringSlice("service.allowOrigins")
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery())
