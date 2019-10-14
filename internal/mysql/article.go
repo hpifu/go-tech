@@ -67,3 +67,7 @@ func (m *Mysql) InsertArticle(article *Article) error {
 func (m *Mysql) UpdateArticle(article *Article) error {
 	return m.db.Model(article).Where("id=?", article.ID).Updates(article).Error
 }
+
+func (m *Mysql) DeleteArticleByID(id int) error {
+	return m.db.Delete(&Article{ID: id}).Error
+}

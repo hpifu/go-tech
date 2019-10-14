@@ -24,3 +24,12 @@ def step_impl(context, sql):
                 result[key] = result[key].strftime("%Y-%m-%d")
             assert_that(result[key], equal_to(obj[key]))
     context.mysql_conn.commit()
+
+
+@then('mysql 不存在 "{sql:str}"')
+def step_impl(context, sql):
+    with context.mysql_conn.cursor() as cursor:
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        assert_that(result, equal_to(None))
+    context.mysql_conn.commit()

@@ -1,4 +1,4 @@
-Feature: PUT /article
+Feature: DELETE /article
 
     Scenario: case update success
         Given mysql 执行
@@ -18,54 +18,16 @@ Feature: PUT /article
                 "email": "hatlonely@foxmail.com"
             }
             """
-        When http 请求 PUT /article/456
+        When http 请求 DELETE /article/456
             """
             {
                 "header": {
                     "Authorization": "d571bda90c2d4e32a793b8a1ff4ff984"
-                },
-                "json": {
-                    "tags": [
-                        "c++",
-                        "golang"
-                    ]
                 }
             }
             """
         Then http 检查 202
-        Then mysql 检查 "SELECT * FROM articles WHERE id=456"
-            """
-            {
-                "title": "标题1",
-                "author_id": 123,
-                "tags": "c++,golang",
-                "author": "hatlonely",
-                "content": "hello world"
-            }
-            """
-        When http 请求 PUT /article/456
-            """
-            {
-                "header": {
-                    "Authorization": "d571bda90c2d4e32a793b8a1ff4ff984"
-                },
-                "json": {
-                    "title": "标题abc",
-                    "content": "hello golang"
-                }
-            }
-            """
-        Then http 检查 202
-        Then mysql 检查 "SELECT * FROM articles WHERE id=456"
-            """
-            {
-                "title": "标题abc",
-                "author_id": 123,
-                "tags": "c++,golang",
-                "author": "hatlonely",
-                "content": "hello golang"
-            }
-            """
+        Then mysql 不存在 "SELECT * FROM articles WHERE id=456"
         Given mysql 执行
             """
             DELETE FROM articles WHERE id IN (456)
@@ -90,17 +52,11 @@ Feature: PUT /article
                 "email": "hatlonely@foxmail.com"
             }
             """
-        When http 请求 PUT /article/456
+        When http 请求 DELETE /article/456
             """
             {
                 "header": {
                     "Authorization": "wrong token"
-                },
-                "json": {
-                    "tags": [
-                        "c++",
-                        "golang"
-                    ]
                 }
             }
             """
@@ -134,15 +90,11 @@ Feature: PUT /article
                 "email": "hatlonely@foxmail.com"
             }
             """
-        When http 请求 PUT /article/456
+        When http 请求 DELETE /article/456
             """
             {
                 "header": {
                     "Authorization": "d571bda90c2d4e32a793b8a1ff4ff984"
-                },
-                "json": {
-                    "title": "标题abc",
-                    "content": "hello golang"
                 }
             }
             """
