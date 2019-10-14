@@ -88,7 +88,7 @@ func main() {
 	r.Use(gin.Recovery())
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     origins,
-		AllowMethods:     []string{"PUT", "POST", "GET", "OPTIONS"},
+		AllowMethods:     []string{"PUT", "POST", "GET", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Accept", "Cache-Control", "X-Requested-With"},
 		AllowCredentials: true,
 	}))
