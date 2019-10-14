@@ -5,17 +5,25 @@ Feature: POST /article
             """
             DELETE FROM articles WHERE title IN ('标题1')
             """
+        Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
+            """
+            {
+                "id": 123,
+                "email": "hatlonely@foxmail.com"
+            }
+            """
         When http 请求 POST /article
             """
             {
+                "header": {
+                    "Authorization": "d571bda90c2d4e32a793b8a1ff4ff984"
+                },
                 "json": {
                     "title": "标题1",
-                    "authorID": 666,
                     "tags": [
                         "c++",
                         "java"
                     ],
-                    "author": "hatlonely",
                     "content": "hello world"
                 }
             }
@@ -25,7 +33,7 @@ Feature: POST /article
             """
             {
                 "title": "标题1",
-                "author_id": 666,
+                "author_id": 123,
                 "tags": "c++, java",
                 "author": "hatlonely",
                 "content": "hello world"
@@ -35,3 +43,4 @@ Feature: POST /article
             """
             DELETE FROM articles WHERE title IN ('标题1')
             """
+        Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
