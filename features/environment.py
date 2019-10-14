@@ -20,7 +20,10 @@ config = {
     "prefix": "output/go-tech",
     "service": {
         "port": 16063,
-        "allowOrigins": ["http://127.0.0.1:4000"],
+        "allowOrigins": [
+            "http://127.0.0.1:4000"
+            "http://127.0.0.1:4001"
+        ],
     },
     "api": {
         "account": "test-go-account:16060",
