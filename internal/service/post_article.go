@@ -34,6 +34,7 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 		Token: c.GetHeader("Authorization"),
 	}
 
+	// get account
 	account, err := s.getAccount(req.Token)
 	if err != nil {
 		return nil, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
@@ -42,6 +43,7 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 		return nil, nil, http.StatusForbidden, fmt.Errorf("authorization failed")
 	}
 
+	// bind request
 	if err := c.Bind(req); err != nil {
 		return nil, nil, http.StatusBadRequest, fmt.Errorf("bind failed. err: [%v]", err)
 	}
@@ -53,6 +55,16 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 	req.AuthorID = account.ID
 	req.Author = strings.Split(account.Email, "@")[0]
 
+	// check if article exists
+	article, err := s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
+	if err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
+	}
+	if article != nil {
+		return req, "文章已存在", http.StatusBadRequest, nil
+	}
+
+	// insert article
 	if err := s.db.InsertArticle(&mysql.Article{
 		AuthorID: req.AuthorID,
 		Author:   req.Author,
@@ -65,7 +77,8 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql insert article failed. err: [%v]", err)
 	}
 
-	article, err := s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
+	// select article id
+	article, err = s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
