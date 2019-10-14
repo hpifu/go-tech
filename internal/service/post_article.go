@@ -54,7 +54,7 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 	if err := s.db.InsertArticle(&mysql.Article{
 		AuthorID: req.AuthorID,
 		Author:   req.Author,
-		Tags:     strings.Join(req.Tags, ", "),
+		Tags:     strings.Join(req.Tags, ","),
 		Title:    req.Title,
 		Content:  req.Content,
 		CTime:    time.Now(),

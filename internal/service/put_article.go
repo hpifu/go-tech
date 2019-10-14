@@ -59,7 +59,7 @@ func (s *Service) PUTArticle(c *gin.Context) (interface{}, interface{}, int, err
 	if err := s.db.UpdateArticle(&mysql.Article{
 		ID:      req.ID,
 		Author:  req.Author,
-		Tags:    strings.Join(req.Tags, ", "),
+		Tags:    strings.Join(req.Tags, ","),
 		Title:   req.Title,
 		Content: req.Content,
 		CTime:   time.Now(),

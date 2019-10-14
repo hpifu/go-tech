@@ -38,7 +38,7 @@ Feature: PUT /article
             {
                 "title": "标题1",
                 "author_id": 123,
-                "tags": "c++, golang",
+                "tags": "c++,golang",
                 "author": "hatlonely",
                 "content": "hello world"
             }
@@ -61,7 +61,7 @@ Feature: PUT /article
             {
                 "title": "标题abc",
                 "author_id": 123,
-                "tags": "c++, golang",
+                "tags": "c++,golang",
                 "author": "hatlonely",
                 "content": "hello golang"
             }
