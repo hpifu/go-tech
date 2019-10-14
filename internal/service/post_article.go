@@ -25,7 +25,9 @@ type Article struct {
 
 type POSTArticleReq Article
 
-type POSTArticleRes struct{}
+type POSTArticleRes struct {
+	ID int `json:"id,omitempty"`
+}
 
 func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &POSTArticleReq{
@@ -63,7 +65,17 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql insert article failed. err: [%v]", err)
 	}
 
-	return req, nil, http.StatusCreated, nil
+	article, err := s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
+	if err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
+	}
+	if article == nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [not found]")
+	}
+
+	return req, &POSTArticleRes{
+		ID: article.ID,
+	}, http.StatusCreated, nil
 }
 
 func (s *Service) validPOSTArticle(req *POSTArticleReq) error {

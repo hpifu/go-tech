@@ -44,6 +44,22 @@ func (m *Mysql) SelectArticleByID(id int) (*Article, error) {
 	return article, nil
 }
 
+func (m *Mysql) SelectArticleByAuthorAndTitle(authorID int, title string) (*Article, error) {
+	article := &Article{}
+	if err := m.db.Where(&Article{
+		AuthorID: authorID,
+		Title:    title,
+	}).Find(article).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return article, nil
+}
+
 func (m *Mysql) InsertArticle(article *Article) error {
 	return m.db.Create(article).Error
 }
