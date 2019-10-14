@@ -56,7 +56,7 @@ func TestMysql(t *testing.T) {
 			}
 		})
 
-		Convey("select ancient by id", func() {
+		Convey("select article by id", func() {
 			for i := 0; i < 20; i++ {
 				a, err := m.SelectArticleByID(i + 1)
 				So(err, ShouldBeNil)
@@ -71,6 +71,37 @@ func TestMysql(t *testing.T) {
 			So(err, ShouldBeNil)
 			So(a, ShouldBeNil)
 		})
+	})
+}
 
+func TestMysql_UpdateArticle(t *testing.T) {
+	m, err := NewMysql("hatlonely:keaiduo1@tcp(test-mysql:3306)/article?charset=utf8&parseTime=True&loc=Local")
+	Convey("test article", t, func() {
+		So(err, ShouldBeNil)
+		So(m, ShouldNotBeNil)
+
+		So(m.db.Delete(&Article{ID: 123}).Error, ShouldBeNil)
+		So(m.db.Create(&Article{
+			ID:       123,
+			AuthorID: 456,
+			Author:   "hatlonely",
+			Title:    "标题123",
+			Content:  "hello world",
+		}).Error, ShouldBeNil)
+
+		Convey("update article", func() {
+			err := m.UpdateArticle(&Article{
+				ID:      123,
+				Title:   "标题1234",
+				Content: "hello golang",
+			})
+			So(err, ShouldBeNil)
+
+			article := &Article{}
+			So(m.db.Where("id=?", 123).First(article).Error, ShouldBeNil)
+			So(article.ID, ShouldEqual, 123)
+			So(article.Title, ShouldEqual, "标题1234")
+			So(article.Content, ShouldEqual, "hello golang")
+		})
 	})
 }

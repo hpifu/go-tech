@@ -47,3 +47,7 @@ func (m *Mysql) SelectArticleByID(id int) (*Article, error) {
 func (m *Mysql) InsertArticle(article *Article) error {
 	return m.db.Create(article).Error
 }
+
+func (m *Mysql) UpdateArticle(article *Article) error {
+	return m.db.Model(article).Where("id=?", article.ID).Updates(article).Error
+}

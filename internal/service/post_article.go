@@ -13,7 +13,7 @@ import (
 
 type Article struct {
 	Token    string   `json:"token,omitempty"`
-	ID       int      `json:"id,omitempty"`
+	ID       int      `json:"id,omitempty" uri:"id"`
 	AuthorID int      `json:"authorID,omitempty"`
 	Author   string   `json:"author,omitempty"`
 	Title    string   `form:"title" json:"title,omitempty"`

@@ -43,7 +43,6 @@ type Account struct {
 }
 
 func (s *Service) getAccount(token string) (*Account, error) {
-
 	result := s.client.GET("http://"+s.apiAccount+"/account/"+token, nil, nil)
 	if result.Err != nil {
 		return nil, result.Err
