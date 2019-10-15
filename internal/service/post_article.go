@@ -37,10 +37,10 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 	// get account
 	account, err := s.getAccount(req.Token)
 	if err != nil {
-		return nil, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}
 	if account == nil {
-		return nil, nil, http.StatusForbidden, fmt.Errorf("authorization failed")
+		return req, nil, http.StatusForbidden, fmt.Errorf("没有该资源权限")
 	}
 
 	// bind request
@@ -61,7 +61,7 @@ func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, er
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
 	if article != nil {
-		return req, "文章已存在", http.StatusBadRequest, nil
+		return req, nil, http.StatusBadRequest, fmt.Errorf("文章已存在")
 	}
 
 	// insert article

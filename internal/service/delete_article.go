@@ -20,7 +20,7 @@ func (s *Service) DELETEArticle(c *gin.Context) (interface{}, interface{}, int, 
 	}
 
 	if req.Token == "" {
-		return req, "验证信息有误", http.StatusBadRequest, nil
+		return req, nil, http.StatusBadRequest, fmt.Errorf("验证信息有误")
 	}
 
 	// select account
@@ -29,7 +29,7 @@ func (s *Service) DELETEArticle(c *gin.Context) (interface{}, interface{}, int, 
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}
 	if account == nil {
-		return req, "没有该资源权限", http.StatusForbidden, nil
+		return req, nil, http.StatusForbidden, fmt.Errorf("没有该资源权限")
 	}
 
 	// bind req
@@ -43,12 +43,12 @@ func (s *Service) DELETEArticle(c *gin.Context) (interface{}, interface{}, int, 
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
 	if article == nil {
-		return req, "未找到该资源", http.StatusBadRequest, nil
+		return req, nil, http.StatusBadRequest, fmt.Errorf("未找到该资源")
 	}
 
 	// check authorization
 	if article.AuthorID != account.ID {
-		return req, "没有该资源权限", http.StatusForbidden, nil
+		return req, nil, http.StatusForbidden, fmt.Errorf("没有该资源权限")
 	}
 
 	// delete article
