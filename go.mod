@@ -4,6 +4,7 @@ go 1.12
 
 replace (
 	cloud.google.com/go => github.com/googleapis/google-cloud-go v0.0.0-20190603211518-c8433c9aaceb
+	go.etcd.io/bbolt => github.com/etcd-io/bbolt v1.3.4-0.20191001164932-6e135e5d7e3d
 	go.uber.org/atomic => github.com/uber-go/atomic v1.4.1-0.20190731194737-ef0d20d85b01
 	go.uber.org/multierr => github.com/uber-go/multierr v1.2.0
 	go.uber.org/zap => github.com/uber-go/zap v1.10.1-0.20190926184545-d8445f34b4ae
@@ -29,9 +30,9 @@ require (
 	github.com/fastly/go-utils v0.0.0-20180712184237-d95a45783239 // indirect
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.4.0
-	github.com/hpifu/go-account v2.1.0+incompatible
+	github.com/hpifu/go-account v2.1.2+incompatible
 	github.com/hpifu/go-godtoken v1.0.2
-	github.com/hpifu/go-kit v1.6.4
+	github.com/hpifu/go-kit v1.6.6
 	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
 	github.com/jinzhu/gorm v1.9.8
 	github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible

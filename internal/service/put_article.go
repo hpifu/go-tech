@@ -21,7 +21,7 @@ func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface
 	}
 
 	// select account
-	account, err := s.accountCli.GETAccount(req.Token, rid)
+	account, err := s.accountCli.GETAccountToken(rid, req.Token)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}
