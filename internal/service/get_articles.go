@@ -14,7 +14,7 @@ type ArticlesReq struct {
 	Limit  int `form:"limit" json:"limit"`
 }
 
-func (s *Service) GETArticles(c *gin.Context) (interface{}, interface{}, int, error) {
+func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &ArticlesReq{Limit: 20}
 
 	if err := c.Bind(req); err != nil {

@@ -8,10 +8,8 @@
     "mysql": {
         "uri": "hatlonely:keaiduo1@tcp(mysql:3306)/article?charset=utf8&parseTime=True&loc=Local"
     },
-    "api": {
-        "account": "go-account:6060"
-    },
-    "pool": {
+    "account": {
+        "address": "go-account:6060",
         "maxConn": 20,
         "connTimeout": "200ms",
         "recvtimeout": "200ms"

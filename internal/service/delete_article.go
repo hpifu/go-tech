@@ -14,7 +14,7 @@ type DELETEArticleReq struct {
 
 type DELETEArticleRes struct{}
 
-func (s *Service) DELETEArticle(c *gin.Context) (interface{}, interface{}, int, error) {
+func (s *Service) DELETEArticle(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &DELETEArticleReq{
 		Token: c.GetHeader("Authorization"),
 	}
@@ -24,7 +24,7 @@ func (s *Service) DELETEArticle(c *gin.Context) (interface{}, interface{}, int, 
 	}
 
 	// select account
-	account, err := s.getAccount(req.Token)
+	account, err := s.client.GETAccount(req.Token, rid)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}

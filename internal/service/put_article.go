@@ -15,13 +15,13 @@ type PUTArticleReq Article
 
 type PUTArticleRes struct{}
 
-func (s *Service) PUTArticle(c *gin.Context) (interface{}, interface{}, int, error) {
+func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &PUTArticleReq{
 		Token: c.GetHeader("Authorization"),
 	}
 
 	// select account
-	account, err := s.getAccount(req.Token)
+	account, err := s.client.GETAccount(req.Token, rid)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}

@@ -29,13 +29,13 @@ type POSTArticleRes struct {
 	ID int `json:"id,omitempty"`
 }
 
-func (s *Service) POSTArticle(c *gin.Context) (interface{}, interface{}, int, error) {
+func (s *Service) POSTArticle(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &POSTArticleReq{
 		Token: c.GetHeader("Authorization"),
 	}
 
 	// get account
-	account, err := s.getAccount(req.Token)
+	account, err := s.client.GETAccount(req.Token, rid)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}

@@ -13,7 +13,7 @@ type ArticleReq struct {
 	ID int `uri:"id" json:"id"`
 }
 
-func (s *Service) GETArticle(c *gin.Context) (interface{}, interface{}, int, error) {
+func (s *Service) GETArticle(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
 	req := &ArticleReq{}
 
 	if err := c.BindUri(req); err != nil {

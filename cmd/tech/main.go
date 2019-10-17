@@ -13,6 +13,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/hpifu/go-account/pkg/account"
 	"github.com/hpifu/go-kit/hhttp"
 	"github.com/hpifu/go-kit/logger"
 	"github.com/hpifu/go-tech/internal/mysql"
@@ -73,13 +74,15 @@ func main() {
 	infoLog.Infof("init mysql success. uri [%v]", config.GetString("mysql.uri"))
 
 	// init http client
-	client := hhttp.NewHttpClient(
-		config.GetInt("pool.maxConn"),
-		config.GetDuration("pool.connTimeout"),
-		config.GetDuration("pool.recvTimeout"),
+	client := account.NewClient(
+		config.GetString("account.address"),
+		config.GetInt("account.maxConn"),
+		config.GetDuration("account.connTimeout"),
+		config.GetDuration("account.recvTimeout"),
 	)
+
 	// init services
-	svc := service.NewService(db, client, config.GetString("api.account"))
+	svc := service.NewService(db, client)
 
 	// init gin
 	origins := config.GetStringSlice("service.allowOrigins")

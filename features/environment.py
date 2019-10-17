@@ -25,8 +25,8 @@ config = {
             "http://127.0.0.1:4001"
         ],
     },
-    "api": {
-        "account": "test-go-account:16060",
+    "account": {
+        "address": "test-go-account:16060",
     },
     "mysql": {
         "host": "test-mysql",
@@ -62,7 +62,7 @@ def deploy():
     fp.close()
     cf["service"]["port"] = ":{}".format(config["service"]["port"])
     cf["service"]["allowOrigins"] = config["service"]["allowOrigins"]
-    cf["api"]["account"] = config["api"]["account"]
+    cf["account"]["address"] = config["account"]["address"]
     cf["mysql"]["uri"] = "{user}:{password}@tcp({host}:{port})/{db}?charset=utf8&parseTime=True&loc=Local".format(
         user=config["mysql"]["user"],
         password=config["mysql"]["password"],
