@@ -27,11 +27,13 @@ replace (
 )
 
 require (
+	github.com/fastly/go-utils v0.0.0-20180712184237-d95a45783239 // indirect
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.4.0
-	github.com/hpifu/go-account v2.1.2+incompatible
+	github.com/hpifu/go-account v2.1.5+incompatible
 	github.com/hpifu/go-godtoken v1.0.2
 	github.com/hpifu/go-kit v1.6.6
+	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
 	github.com/jinzhu/gorm v1.9.8
 	github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible
 	github.com/sirupsen/logrus v1.4.2

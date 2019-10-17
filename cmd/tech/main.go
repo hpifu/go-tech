@@ -94,7 +94,7 @@ func main() {
 	godtokenCli := godtoken.NewServiceClient(conn)
 
 	// init services
-	svc := service.NewService(db, accountCli, &godtokenCli)
+	svc := service.NewService(db, accountCli, godtokenCli)
 
 	// init gin
 	origins := config.GetStringSlice("service.allowOrigins")

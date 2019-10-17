@@ -14,13 +14,13 @@ var AccessLog *logrus.Logger = logrus.New()
 type Service struct {
 	db          *mysql.Mysql
 	accountCli  *account.Client
-	godtokenCli *godtoken.ServiceClient
+	godtokenCli godtoken.ServiceClient
 }
 
 func NewService(
 	db *mysql.Mysql,
 	accountCli *account.Client,
-	godtokenCli *godtoken.ServiceClient,
+	godtokenCli godtoken.ServiceClient,
 ) *Service {
 	return &Service{
 		db:          db,

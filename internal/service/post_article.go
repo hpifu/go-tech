@@ -21,6 +21,7 @@ type Article struct {
 	Content  string   `form:"content" json:"content,omitempty"`
 	CTime    string   `json:"ctime,omitempty"`
 	UTime    string   `json:"utime,omitempty"`
+	Avatar   string   `json:"avatar,omitempty"`
 }
 
 type POSTArticleReq Article
