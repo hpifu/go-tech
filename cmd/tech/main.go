@@ -14,12 +14,14 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hpifu/go-account/pkg/account"
+	godtoken "github.com/hpifu/go-godtoken/api"
 	"github.com/hpifu/go-kit/hhttp"
 	"github.com/hpifu/go-kit/logger"
 	"github.com/hpifu/go-tech/internal/mysql"
 	"github.com/hpifu/go-tech/internal/service"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 // AppVersion name
@@ -74,15 +76,25 @@ func main() {
 	infoLog.Infof("init mysql success. uri [%v]", config.GetString("mysql.uri"))
 
 	// init http client
-	client := account.NewClient(
+	accountCli := account.NewClient(
 		config.GetString("account.address"),
 		config.GetInt("account.maxConn"),
 		config.GetDuration("account.connTimeout"),
 		config.GetDuration("account.recvTimeout"),
 	)
 
+	// init godtoken client
+	conn, err := grpc.Dial(
+		config.GetString("godtoken.address"),
+		grpc.WithInsecure(),
+	)
+	if err != nil {
+		panic(err)
+	}
+	godtokenCli := godtoken.NewServiceClient(conn)
+
 	// init services
-	svc := service.NewService(db, client)
+	svc := service.NewService(db, accountCli, &godtokenCli)
 
 	// init gin
 	origins := config.GetStringSlice("service.allowOrigins")

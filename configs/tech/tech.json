@@ -14,6 +14,9 @@
         "connTimeout": "200ms",
         "recvtimeout": "200ms"
     },
+    "godtoken": {
+        "address": "go-godtoken:7060"
+    },
     "logger": {
         "infoLog": {
             "filename": "log/tech.info",

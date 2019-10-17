@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/hpifu/go-account/pkg/account"
+	godtoken "github.com/hpifu/go-godtoken/api"
 	"github.com/hpifu/go-tech/internal/mysql"
 	"github.com/sirupsen/logrus"
 )
@@ -11,28 +12,19 @@ var WarnLog *logrus.Logger = logrus.New()
 var AccessLog *logrus.Logger = logrus.New()
 
 type Service struct {
-	db     *mysql.Mysql
-	client *account.Client
+	db          *mysql.Mysql
+	accountCli  *account.Client
+	godtokenCli *godtoken.ServiceClient
 }
 
 func NewService(
 	db *mysql.Mysql,
-	client *account.Client,
+	accountCli *account.Client,
+	godtokenCli *godtoken.ServiceClient,
 ) *Service {
 	return &Service{
-		db:     db,
-		client: client,
+		db:          db,
+		accountCli:  accountCli,
+		godtokenCli: godtokenCli,
 	}
-}
-
-type Account struct {
-	ID        int    `form:"id" json:"id,omitempty"`
-	Email     string `form:"email" json:"email,omitempty"`
-	Phone     string `form:"phone" json:"phone,omitempty"`
-	FirstName string `form:"firstName" json:"firstName,omitempty"`
-	LastName  string `form:"lastName" json:"lastName,omitempty"`
-	Birthday  string `form:"birthday" json:"birthday,omitempty"`
-	Password  string `form:"password" json:"password,omitempty"`
-	Gender    int    `form:"gender" json:"gender"`
-	Avatar    string `form:"avatar" json:"avatar"`
 }

@@ -24,7 +24,7 @@ func (s *Service) DELETEArticle(rid string, c *gin.Context) (interface{}, interf
 	}
 
 	// select account
-	account, err := s.client.GETAccount(req.Token, rid)
+	account, err := s.accountCli.GETAccount(req.Token, rid)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get account failed. err: [%v]", err)
 	}

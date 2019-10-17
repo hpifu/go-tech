@@ -28,6 +28,9 @@ config = {
     "account": {
         "address": "test-go-account:16060",
     },
+    "godtoken": {
+        "address": "test-go-godtoken:17060"
+    },
     "mysql": {
         "host": "test-mysql",
         "port": 3306,
@@ -63,6 +66,7 @@ def deploy():
     cf["service"]["port"] = ":{}".format(config["service"]["port"])
     cf["service"]["allowOrigins"] = config["service"]["allowOrigins"]
     cf["account"]["address"] = config["account"]["address"]
+    cf["godtoken"]["address"] = config["godtoken"]["address"]
     cf["mysql"]["uri"] = "{user}:{password}@tcp({host}:{port})/{db}?charset=utf8&parseTime=True&loc=Local".format(
         user=config["mysql"]["user"],
         password=config["mysql"]["password"],
