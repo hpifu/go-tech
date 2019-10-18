@@ -9,15 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ArticlesReq struct {
+type GETArticlesReq struct {
 	Offset int `form:"offset" json:"offset"`
 	Limit  int `form:"limit" json:"limit"`
 }
 
-type ArticlesRes []*Article
+type GETArticlesRes []*Article
 
 func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
-	req := &ArticlesReq{Limit: 20}
+	req := &GETArticlesReq{Limit: 20}
 
 	if err := c.Bind(req); err != nil {
 		return nil, nil, http.StatusBadRequest, fmt.Errorf("bind failed. err: [%v]", err)
@@ -46,7 +46,7 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get accounts failed. err: [%v]", err)
 	}
 
-	var as ArticlesRes
+	var as GETArticlesRes
 	for _, article := range articles {
 		var avatar string
 		author := "unknown"

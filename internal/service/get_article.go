@@ -9,12 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ArticleReq struct {
+type GETArticleReq struct {
 	ID int `uri:"id" json:"id"`
 }
 
+type GETArticleRes Article
+
 func (s *Service) GETArticle(rid string, c *gin.Context) (interface{}, interface{}, int, error) {
-	req := &ArticleReq{}
+	req := &GETArticleReq{}
 
 	if err := c.BindUri(req); err != nil {
 		return nil, nil, http.StatusBadRequest, fmt.Errorf("bind uri failed. err: [%v]", err)
