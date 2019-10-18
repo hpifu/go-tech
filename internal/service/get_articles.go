@@ -57,9 +57,14 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 	}
 
 	accounts, err := s.accountCli.GETAccounts(rid, res.Token, ids)
+	if err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("get accounts failed. err: [%v]", err)
+	}
 	accountMap := map[int]*account.Account{}
-	for _, a := range accounts {
-		accountMap[a.ID] = a
+	if accounts != nil {
+		for _, a := range accounts {
+			accountMap[a.ID] = a
+		}
 	}
 
 	var as ArticlesRes
