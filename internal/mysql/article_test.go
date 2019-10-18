@@ -7,7 +7,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestMysql(t *testing.T) {
+func TestMysql_Article(t *testing.T) {
 	m, err := NewMysql("hatlonely:keaiduo1@tcp(test-mysql:3306)/article?charset=utf8&parseTime=True&loc=Local")
 	Convey("test article", t, func() {
 		So(err, ShouldBeNil)
@@ -54,11 +54,11 @@ func TestMysql(t *testing.T) {
 				So(a.Content, ShouldEqual, article.Content)
 				So(a.Author, ShouldEqual, article.Author)
 			}
-
-			a, err := m.SelectArticleByID(21)
-			So(err, ShouldBeNil)
-			So(a, ShouldBeNil)
 		})
+
+		for i := 0; i < 20; i++ {
+			So(m.db.Delete(&Article{ID: i + 1}).Error, ShouldBeNil)
+		}
 	})
 }
 
@@ -91,5 +91,9 @@ func TestMysql_UpdateArticle(t *testing.T) {
 			So(article.Title, ShouldEqual, "标题124")
 			So(article.Content, ShouldEqual, "hello golang")
 		})
+
+		for i := 0; i < 20; i++ {
+			So(m.db.Delete(&Article{ID: i + 1}).Error, ShouldBeNil)
+		}
 	})
 }

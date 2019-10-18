@@ -29,6 +29,16 @@ func NewMysql(uri string) (*Mysql, error) {
 		}
 	}
 
+	if !db.HasTable(&Tag{}) {
+		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&Tag{}).Error; err != nil {
+			panic(err)
+		}
+	} else {
+		if err := db.AutoMigrate(&Tag{}).Error; err != nil {
+			panic(err)
+		}
+	}
+
 	// 服务器主动断开连接，报 "invalid connection" 错误
 	// 临时解决方案，设置短一点连接时间，主动重连
 	// https://github.com/jinzhu/gorm/issues/1822

@@ -13,6 +13,13 @@ def step_impl(context):
     context.mysql_conn.commit()
 
 
+@given('mysql 执行 "{sql:str}"')
+def step_impl(context, sql):
+    with context.mysql_conn.cursor() as cursor:
+        cursor.execute(sql)
+    context.mysql_conn.commit()
+
+
 @then('mysql 检查 "{sql:str}"')
 def step_impl(context, sql):
     obj = json.loads(context.text)

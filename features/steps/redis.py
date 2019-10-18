@@ -16,6 +16,11 @@ def step_impl(context, key):
     context.redis_client.set(key, context.text.strip())
 
 
+@given('redis set kv "{key:str}" "{val:str}"')
+def step_impl(context, key, val):
+    context.redis_client.set(key, val)
+
+
 @given('redis del "{key:str}"')
 def step_impl(context, key):
     context.redis_client.delete(key)

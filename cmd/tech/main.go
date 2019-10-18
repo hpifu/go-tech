@@ -117,6 +117,7 @@ func main() {
 	r.GET("/article", d.Decorate(svc.GETArticles))
 	r.GET("/article/:id", d.Decorate(svc.GETArticle))
 	r.GET("/articles/author/:authorID", d.Decorate(svc.GETArticlesAuthor))
+	r.GET("/articles/tag/:tag", d.Decorate(svc.GETArticlesTag))
 	r.POST("/article", d.Decorate(svc.POSTArticle))
 	r.PUT("/article/:id", d.Decorate(svc.PUTArticle))
 	r.DELETE("article/:id", d.Decorate(svc.DELETEArticle))
