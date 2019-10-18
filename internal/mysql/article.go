@@ -20,7 +20,28 @@ type Article struct {
 func (m *Mysql) SelectArticles(offset int, limit int) ([]*Article, error) {
 	var articles []*Article
 
-	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, content").Order("utime DESC").Offset(offset).Limit(limit).Find(&articles).Error; err != nil {
+	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, content").
+		Order("utime DESC").
+		Offset(offset).Limit(limit).
+		Find(&articles).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return articles, nil
+}
+
+func (m *Mysql) SelectArticlesByAuthor(authorID int, offset, limit int) ([]*Article, error) {
+	var articles []*Article
+
+	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, content").
+		Where("author_id=?", authorID).
+		Order("utime DESC").
+		Offset(offset).Limit(limit).
+		Find(&articles).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
 		}

@@ -1,14 +1,10 @@
 package service
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/hpifu/go-account/pkg/account"
-	godtoken "github.com/hpifu/go-godtoken/api"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,30 +37,13 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 	}
 
 	var ids []int
-	idMap := map[int]struct{}{}
 	for _, article := range articles {
-		idMap[article.AuthorID] = struct{}{}
-	}
-	for k := range idMap {
-		ids = append(ids, k)
+		ids = append(ids, article.AuthorID)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-	defer cancel()
-	res, err := s.godtokenCli.GetToken(ctx, &godtoken.GetTokenReq{Rid: rid})
-	if err != nil {
-		return req, nil, http.StatusInternalServerError, fmt.Errorf("godtoken verify failed. err: [%v]", err)
-	}
-
-	accounts, err := s.accountCli.GETAccounts(rid, res.Token, ids)
+	accountMap, err := s.GetAccounts(rid, ids)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get accounts failed. err: [%v]", err)
-	}
-	accountMap := map[int]*account.Account{}
-	if accounts != nil {
-		for _, a := range accounts {
-			accountMap[a.ID] = a
-		}
 	}
 
 	var as ArticlesRes
