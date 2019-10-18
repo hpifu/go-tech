@@ -33,7 +33,7 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 	}
 
 	if articles == nil {
-		return req, nil, http.StatusUnauthorized, nil
+		return req, nil, http.StatusNoContent, nil
 	}
 
 	var ids []int
