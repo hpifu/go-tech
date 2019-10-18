@@ -92,6 +92,7 @@ func main() {
 		panic(err)
 	}
 	godtokenCli := godtoken.NewServiceClient(conn)
+	infoLog.Infof("init godtoken client success. address: [%v]", config.GetString("godtoken.address"))
 
 	// init services
 	svc := service.NewService(db, accountCli, godtokenCli)
@@ -119,7 +120,7 @@ func main() {
 	r.PUT("/article/:id", d.Decorate(svc.PUTArticle))
 	r.DELETE("article/:id", d.Decorate(svc.DELETEArticle))
 
-	infoLog.Infof("%v init success, port [%v]", os.Args[0], config.GetString("service.port"))
+	infoLog.Infof("%v init success, setting: %v", os.Args[0], config.AllSettings())
 
 	// run server
 	server := &http.Server{
