@@ -1,14 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('unit') {
-            steps {
-                sh 'make dockertest'
-            }
-        }
         stage('image') {
             steps {
                 sh 'make image'
+            }
+        }
+        stage('unit') {
+            steps {
+                sh 'make dockertest'
             }
         }
         stage('behave') {
@@ -19,6 +19,11 @@ pipeline {
         stage('deploy') {
             steps {
                 sh 'make deploy'
+            }
+        }
+        stage('deploy test') {
+            steps {
+                sh 'make deploytest'
             }
         }
     }
