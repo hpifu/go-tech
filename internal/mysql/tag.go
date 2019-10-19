@@ -102,8 +102,8 @@ func (m *Mysql) SelectArticlesByTag(tag string, offset, limit int) ([]*Article, 
 }
 
 type TagCountPair struct {
-	Tag   string
-	Count int
+	Tag   string `json:"tag"`
+	Count int    `json:"count"`
 }
 
 func (m *Mysql) CountTag() ([]*TagCountPair, error) {
