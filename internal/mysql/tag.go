@@ -100,3 +100,19 @@ func (m *Mysql) SelectArticlesByTag(tag string, offset, limit int) ([]*Article, 
 
 	return articles, nil
 }
+
+type TagCountPair struct {
+	Tag   string
+	Count int
+}
+
+func (m *Mysql) CountTag() ([]*TagCountPair, error) {
+	var tagCloud []*TagCountPair
+	if err := m.db.Raw(`
+	SELECT tag, count(*) AS count FROM tags GROUP BY tag ORDER BY count DESC LIMIT 50;
+`).Scan(&tagCloud).Error; err != nil {
+		return nil, err
+	}
+
+	return tagCloud, nil
+}

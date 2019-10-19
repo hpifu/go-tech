@@ -121,6 +121,7 @@ func main() {
 	r.POST("/article", d.Decorate(svc.POSTArticle))
 	r.PUT("/article/:id", d.Decorate(svc.PUTArticle))
 	r.DELETE("article/:id", d.Decorate(svc.DELETEArticle))
+	r.GET("/tagcloud", d.Decorate(svc.GETTagCloud))
 
 	infoLog.Infof("%v init success, setting: %v", os.Args[0], config.AllSettings())
 
