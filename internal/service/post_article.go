@@ -87,6 +87,12 @@ func (s *Service) POSTArticle(rid string, c *gin.Context) (interface{}, interfac
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [not found]")
 	}
 
+	for _, tag := range req.Tags {
+		if err := s.db.InsertTag(tag, article.ID); err != nil {
+			return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql insert tag failed. err: [%v]", err)
+		}
+	}
+
 	return req, &POSTArticleRes{
 		ID: article.ID,
 	}, http.StatusCreated, nil
