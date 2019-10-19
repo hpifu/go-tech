@@ -1,6 +1,8 @@
 package mysql
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Tag struct {
 	ID        int    `gorm:"type:bigint(20) auto_increment;primary_key" json:"id,omitempty"`
@@ -20,6 +22,61 @@ func (m *Mysql) DeleteTag(tag string, articleID int) error {
 		Tag:       tag,
 		ArticleID: articleID,
 	}).Error
+}
+
+func (m *Mysql) SelectTagsByArticle(articleID int) ([]*Tag, error) {
+	var tags []*Tag
+
+	if err := m.db.Where("article_id=?", articleID).Find(&tags).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return tags, nil
+}
+
+func (m *Mysql) UpdateTagsByArticle(articleID int, newTagStr []string) error {
+	oldTags, err := m.SelectTagsByArticle(articleID)
+	if err != nil {
+		return err
+	}
+	oldTagStrSet := map[string]struct{}{}
+	for _, tag := range oldTags {
+		oldTagStrSet[tag.Tag] = struct{}{}
+	}
+	newTagStrSet := map[string]struct{}{}
+	for _, t := range newTagStr {
+		newTagStrSet[t] = struct{}{}
+	}
+
+	var tagIDToDelete []int
+	for _, oldTag := range oldTags {
+		if _, ok := newTagStrSet[oldTag.Tag]; !ok {
+			tagIDToDelete = append(tagIDToDelete, oldTag.ID)
+		}
+	}
+
+	if err := m.db.Where("id IN (?)", tagIDToDelete).Delete(&Tag{}).Error; err != nil {
+		return err
+	}
+
+	var tagToInsert []string
+	for _, newT := range newTagStr {
+		if _, ok := oldTagStrSet[newT]; !ok {
+			tagToInsert = append(tagToInsert, newT)
+		}
+	}
+
+	for _, t := range tagToInsert {
+		if err := m.InsertTag(t, articleID); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (m *Mysql) SelectArticlesByTag(tag string, offset, limit int) ([]*Article, error) {

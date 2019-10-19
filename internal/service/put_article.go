@@ -56,6 +56,10 @@ func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface
 
 	req.Author = strings.Split(account.Email, "@")[0]
 
+	if err := s.db.UpdateTagsByArticle(req.ID, req.Tags); err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql update tag failed. err: [%v]", err)
+	}
+
 	if err := s.db.UpdateArticle(&mysql.Article{
 		ID:      req.ID,
 		Author:  req.Author,

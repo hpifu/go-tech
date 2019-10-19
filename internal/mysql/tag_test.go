@@ -36,6 +36,11 @@ func TestMysql_Tag(t *testing.T) {
 		So(m.InsertTag("tag1", 124), ShouldBeNil)
 		So(m.InsertTag("tag2", 124), ShouldBeNil)
 		{
+			tags, err := m.SelectTagsByArticle(124)
+			So(err, ShouldBeNil)
+			So(len(tags), ShouldEqual, 2)
+		}
+		{
 			articles, err := m.SelectArticlesByTag("tag1", 0, 20)
 			So(err, ShouldBeNil)
 			So(len(articles), ShouldEqual, 2)
