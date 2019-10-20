@@ -52,7 +52,6 @@ func TestMysql_Tag(t *testing.T) {
 			So(articles[0].ID, ShouldEqual, 124)
 			So(articles[0].Title, ShouldEqual, "标题124")
 			So(articles[0].AuthorID, ShouldEqual, 666)
-			So(articles[0].Content, ShouldEqual, "hello world")
 		}
 
 		// clean
