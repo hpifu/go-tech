@@ -29,9 +29,6 @@ var articleMapping = `{
 				"analyzer": "ik_max_word",
 				"search_analyzer": "ik_smart"
 			},
-			"brief": {
-				"type": "text"
-			},
 			"content": {
 				"type": "text",
 				"analyzer": "ik_max_word",

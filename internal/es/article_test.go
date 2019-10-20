@@ -18,7 +18,6 @@ func Test(t *testing.T) {
 			Title:   "标题",
 			Author:  "hatlonely",
 			Tags:    "c++,java",
-			Brief:   "hello",
 			Content: "hello world",
 		}), ShouldBeNil)
 
@@ -27,7 +26,6 @@ func Test(t *testing.T) {
 			Title:   "标题",
 			Author:  "hatlonely",
 			Tags:    "c++,java",
-			Brief:   "hello",
 			Content: "你好世界",
 		}), ShouldBeNil)
 

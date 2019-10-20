@@ -80,7 +80,6 @@ func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface
 		Author:  strings.Split(account.Email, "@")[0],
 		Tags:    reqArticle.Tags,
 		Content: reqArticle.Content,
-		Brief:   reqArticle.Brief,
 	}
 	if err := s.es.UpdateArticle(esArticle); err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("es update article failed. err: [%v]", err)

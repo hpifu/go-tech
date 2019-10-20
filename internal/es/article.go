@@ -13,7 +13,6 @@ type Article struct {
 	Title   string `json:"title,omitempty"`
 	Author  string `json:"author,omitempty"`
 	Tags    string `json:"tags,omitempty"`
-	Brief   string `json:"brief,omitempty"`
 	Content string `json:"content,omitempty"`
 }
 

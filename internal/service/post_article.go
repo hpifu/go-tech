@@ -101,7 +101,6 @@ func (s *Service) POSTArticle(rid string, c *gin.Context) (interface{}, interfac
 		Author:  strings.Split(account.Email, "@")[0],
 		Tags:    reqArticle.Tags,
 		Content: reqArticle.Content,
-		Brief:   reqArticle.Brief,
 	}
 	if err := s.es.InsertArticle(esArticle); err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("es insert article failed. err: [%v]", err)
