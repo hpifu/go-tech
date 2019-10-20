@@ -29,6 +29,9 @@ var articleMapping = `{
 				"analyzer": "ik_max_word",
 				"search_analyzer": "ik_smart"
 			},
+			"brief": {
+				"type": "text"
+			},
 			"content": {
 				"type": "text",
 				"analyzer": "ik_max_word",
@@ -39,10 +42,12 @@ var articleMapping = `{
 }`
 
 type ES struct {
-	es *elastic.Client
+	es      *elastic.Client
+	timeout time.Duration
+	index   string
 }
 
-func NewES(uri string) (*ES, error) {
+func NewES(uri string, index string, timeout time.Duration) (*ES, error) {
 	client, err := elastic.NewClient(
 		elastic.SetURL(uri),
 		elastic.SetSniff(false),
@@ -64,12 +69,12 @@ func NewES(uri string) (*ES, error) {
 	{
 		ctx, cancel := context.WithTimeout(context.Background(), 3000*time.Millisecond)
 		defer cancel()
-		exists, err := client.IndexExists("article").Do(ctx)
+		exists, err := client.IndexExists(index).Do(ctx)
 		if err != nil {
 			return nil, err
 		}
 		if !exists {
-			createIndex, err := client.CreateIndex("article").Body(articleMapping).Do(context.Background())
+			createIndex, err := client.CreateIndex(index).Body(articleMapping).Do(context.Background())
 			if err != nil {
 				return nil, err
 			}
@@ -80,6 +85,8 @@ func NewES(uri string) (*ES, error) {
 	}
 
 	return &ES{
-		es: client,
+		es:      client,
+		timeout: timeout,
+		index:   index,
 	}, nil
 }

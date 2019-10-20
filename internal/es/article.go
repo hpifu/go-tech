@@ -2,11 +2,11 @@ package es
 
 import (
 	"context"
-	"reflect"
-	"strings"
-	"time"
-
 	"github.com/olivere/elastic/v7"
+	"net/http"
+	"reflect"
+	"strconv"
+	"strings"
 )
 
 type Article struct {
@@ -14,6 +14,7 @@ type Article struct {
 	Title   string `json:"title,omitempty"`
 	Author  string `json:"author,omitempty"`
 	Tags    string `json:"tags,omitempty"`
+	Brief   string `json:"brief,omitempty"`
 	Content string `json:"content,omitempty"`
 }
 
@@ -27,7 +28,39 @@ func split(s string) []string {
 		return false
 	}
 	return strings.FieldsFunc(s, f)
+}
 
+func (e *ES) InsertArticle(article *Article) error {
+	ctx, cancel := context.WithTimeout(context.Background(), e.timeout)
+	defer cancel()
+	if _, err := e.es.Index().Index(e.index).Id(strconv.Itoa(article.ID)).BodyJson(article).Do(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (e *ES) DeleteArticle(id int) error {
+	ctx, cancle := context.WithTimeout(context.Background(), e.timeout)
+	defer cancle()
+	if _, err := e.es.Delete().Index(e.index).Id(strconv.Itoa(id)).Do(ctx); err != nil && err.(*elastic.Error).Status != http.StatusNotFound {
+		return err
+	}
+
+	return nil
+}
+
+func (e *ES) UpdateArticle(article *Article) error {
+	ctx, cancle := context.WithTimeout(context.Background(), e.timeout)
+	defer cancle()
+	if _, err := e.es.Update().Index(e.index).Id(strconv.Itoa(article.ID)).Doc(article).Do(ctx); err != nil {
+		if err.(*elastic.Error).Status == http.StatusNotFound {
+			return e.InsertArticle(article)
+		}
+		return err
+	}
+
+	return nil
 }
 
 func (e *ES) SearchArticle(value string, offset int, limit int) ([]*Article, error) {
@@ -39,15 +72,15 @@ func (e *ES) SearchArticle(value string, offset int, limit int) ([]*Article, err
 		q := elastic.NewBoolQuery()
 		q.Should(elastic.NewTermQuery("title", val))
 		q.Should(elastic.NewTermQuery("author", val))
-		q.Should(elastic.NewTermQuery("dynasty", val))
+		q.Should(elastic.NewTermQuery("tags", val))
 		q.Should(elastic.NewTermQuery("content", val))
 		query.Must(q)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5000*time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), e.timeout)
 	defer cancel()
 	res, err := e.es.Search().
-		Index("article").
+		Index(e.index).
 		Query(query).
 		From(offset).Size(limit).
 		Do(ctx)
