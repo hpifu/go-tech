@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/hpifu/go-account/pkg/account"
 	godtoken "github.com/hpifu/go-godtoken/api"
+	"github.com/hpifu/go-tech/internal/es"
 	"github.com/hpifu/go-tech/internal/mysql"
 	"github.com/sirupsen/logrus"
 	"time"
@@ -16,6 +17,7 @@ var AccessLog *logrus.Logger = logrus.New()
 
 type Service struct {
 	db              *mysql.Mysql
+	es              *es.ES
 	accountCli      *account.Client
 	godtokenCli     godtoken.ServiceClient
 	godtokenTimeout time.Duration
@@ -23,11 +25,13 @@ type Service struct {
 
 func NewService(
 	db *mysql.Mysql,
+	es *es.ES,
 	accountCli *account.Client,
 	godtokenCli godtoken.ServiceClient,
 ) *Service {
 	return &Service{
 		db:              db,
+		es:              es,
 		accountCli:      accountCli,
 		godtokenCli:     godtokenCli,
 		godtokenTimeout: 200 * time.Millisecond,

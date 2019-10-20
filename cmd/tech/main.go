@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/hpifu/go-tech/internal/es"
 	"net/http"
 	"os"
 	"os/signal"
@@ -75,6 +76,17 @@ func main() {
 	}
 	infoLog.Infof("init mysql success. uri [%v]", config.GetString("mysql.uri"))
 
+	// init elasticsearch
+	esclient, err := es.NewES(
+		config.GetString("es.uri"),
+		config.GetString("es.index"),
+		config.GetDuration("es.timeout"),
+	)
+	if err != nil {
+		panic(err)
+	}
+	infoLog.Infof("init elasticsearch success. uri [%v]", config.GetString("es.uri"))
+
 	// init http client
 	accountCli := account.NewClient(
 		config.GetString("account.address"),
@@ -95,7 +107,7 @@ func main() {
 	infoLog.Infof("init godtoken client success. address: [%v]", config.GetString("godtoken.address"))
 
 	// init services
-	svc := service.NewService(db, accountCli, godtokenCli)
+	svc := service.NewService(db, esclient, accountCli, godtokenCli)
 
 	// init gin
 	origins := config.GetStringSlice("service.allowOrigins")
@@ -122,6 +134,7 @@ func main() {
 	r.PUT("/article/:id", d.Decorate(svc.PUTArticle))
 	r.DELETE("article/:id", d.Decorate(svc.DELETEArticle))
 	r.GET("/tagcloud", d.Decorate(svc.GETTagCloud))
+	r.GET("/search", d.Decorate(svc.Search))
 
 	infoLog.Infof("%v init success, setting: %v", os.Args[0], config.AllSettings())
 

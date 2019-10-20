@@ -8,6 +8,11 @@
     "mysql": {
         "uri": "hatlonely:keaiduo1@tcp(mysql:3306)/article?charset=utf8mb4&parseTime=True&loc=Local"
     },
+    "es": {
+        "uri": "http://elasticsearch:9200",
+        "timeout": "5s",
+        "index": "article"
+    },
     "account": {
         "address": "go-account:6060",
         "maxConn": 20,

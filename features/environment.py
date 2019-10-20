@@ -31,6 +31,9 @@ config = {
     "godtoken": {
         "address": "test-go-godtoken:17060"
     },
+    "es": {
+        "uri": "http://test-elasticsearch:9200"
+    },
     "mysql": {
         "host": "test-mysql",
         "port": 3306,
@@ -67,6 +70,7 @@ def deploy():
     cf["service"]["allowOrigins"] = config["service"]["allowOrigins"]
     cf["account"]["address"] = config["account"]["address"]
     cf["godtoken"]["address"] = config["godtoken"]["address"]
+    cf["es"]["uri"] = config["es"]["uri"]
     cf["mysql"]["uri"] = "{user}:{password}@tcp({host}:{port})/{db}?charset=utf8&parseTime=True&loc=Local".format(
         user=config["mysql"]["user"],
         password=config["mysql"]["password"],
