@@ -42,7 +42,11 @@ func (s *Service) Search(rid string, c *gin.Context) (interface{}, interface{}, 
 	}
 
 	// get author info from account
-	accountMap, err := s.GetAccounts(rid, ids)
+	var authorIDs []int
+	for _, article := range articles {
+		authorIDs = append(authorIDs, article.AuthorID)
+	}
+	accountMap, err := s.GetAccounts(rid, authorIDs)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get accounts failed. err: [%v]", err)
 	}
