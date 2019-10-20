@@ -35,7 +35,6 @@ Feature: POST /article
                 "title": "标题1",
                 "author_id": 123,
                 "tags": "c++,java",
-                "author": "hatlonely",
                 "content": "hello world"
             }
             """

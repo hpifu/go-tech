@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/hpifu/go-tech/internal/es"
 	"net/http"
 	"strings"
 	"time"
@@ -55,48 +56,59 @@ func (s *Service) POSTArticle(rid string, c *gin.Context) (interface{}, interfac
 	}
 
 	req.AuthorID = account.ID
-	req.Author = strings.Split(account.Email, "@")[0]
 
 	// check if article exists
-	article, err := s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
+	dbArticle, err := s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
-	if article != nil {
+	if dbArticle != nil {
 		return req, nil, http.StatusBadRequest, fmt.Errorf("文章已存在")
 	}
 
 	// insert article
-	if err := s.db.InsertArticle(&mysql.Article{
+	reqArticle := &mysql.Article{
 		AuthorID: req.AuthorID,
-		Author:   req.Author,
 		Tags:     strings.Join(req.Tags, ","),
 		Title:    req.Title,
 		Content:  req.Content,
 		Brief:    runecut(req.Content, 60),
 		CTime:    time.Now(),
 		UTime:    time.Now(),
-	}); err != nil {
+	}
+	if err := s.db.InsertArticle(reqArticle); err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql insert article failed. err: [%v]", err)
 	}
 
 	// select article id
-	article, err = s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
+	dbArticle, err = s.db.SelectArticleByAuthorAndTitle(req.AuthorID, req.Title)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [%v]", err)
 	}
-	if article == nil {
+	if dbArticle == nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select article failed. err: [not found]")
 	}
 
 	for _, tag := range req.Tags {
-		if err := s.db.InsertTag(tag, article.ID); err != nil {
+		if err := s.db.InsertTag(tag, dbArticle.ID); err != nil {
 			return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql insert tag failed. err: [%v]", err)
 		}
 	}
 
+	esArticle := &es.Article{
+		ID:      dbArticle.ID,
+		Title:   reqArticle.Title,
+		Author:  strings.Split(account.Email, "@")[0],
+		Tags:    reqArticle.Tags,
+		Content: reqArticle.Content,
+		Brief:   reqArticle.Brief,
+	}
+	if err := s.es.InsertArticle(esArticle); err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("es insert article failed. err: [%v]", err)
+	}
+
 	return req, &POSTArticleRes{
-		ID: article.ID,
+		ID: dbArticle.ID,
 	}, http.StatusCreated, nil
 }
 

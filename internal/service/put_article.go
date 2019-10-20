@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/hpifu/go-tech/internal/es"
 	"net/http"
 	"strings"
 	"time"
@@ -60,7 +61,7 @@ func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql update tag failed. err: [%v]", err)
 	}
 
-	if err := s.db.UpdateArticle(&mysql.Article{
+	reqArticle := &mysql.Article{
 		ID:      req.ID,
 		Author:  req.Author,
 		Tags:    strings.Join(req.Tags, ","),
@@ -68,8 +69,21 @@ func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface
 		Content: req.Content,
 		Brief:   runecut(req.Content, 60),
 		UTime:   time.Now(),
-	}); err != nil {
+	}
+	if err := s.db.UpdateArticle(reqArticle); err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql update article failed. err: [%v]", err)
+	}
+
+	esArticle := &es.Article{
+		ID:      reqArticle.ID,
+		Title:   reqArticle.Title,
+		Author:  strings.Split(account.Email, "@")[0],
+		Tags:    reqArticle.Tags,
+		Content: reqArticle.Content,
+		Brief:   reqArticle.Brief,
+	}
+	if err := s.es.UpdateArticle(esArticle); err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("es update article failed. err: [%v]", err)
 	}
 
 	return req, nil, http.StatusAccepted, nil
