@@ -20,7 +20,7 @@ type Article struct {
 func (m *Mysql) SelectArticles(offset int, limit int) ([]*Article, error) {
 	var articles []*Article
 
-	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, brief").
+	if err := m.db.Select("id, title, tags, author_id, ctime, utime, brief").
 		Order("utime DESC").
 		Offset(offset).Limit(limit).
 		Find(&articles).Error; err != nil {
@@ -37,7 +37,7 @@ func (m *Mysql) SelectArticles(offset int, limit int) ([]*Article, error) {
 func (m *Mysql) SelectArticlesByAuthor(authorID int, offset, limit int) ([]*Article, error) {
 	var articles []*Article
 
-	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, brief").
+	if err := m.db.Select("id, title, tags, author_id, ctime, utime, brief").
 		Where("author_id=?", authorID).
 		Order("utime DESC").
 		Offset(offset).Limit(limit).
@@ -55,7 +55,7 @@ func (m *Mysql) SelectArticlesByAuthor(authorID int, offset, limit int) ([]*Arti
 func (m *Mysql) SelectArticlesByIDs(ids []int) ([]*Article, error) {
 	var articles []*Article
 
-	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, brief").
+	if err := m.db.Select("id, title, tags, author_id, ctime, utime, brief").
 		Where("id IN (?)", ids).
 		Order("utime DESC").
 		Find(&articles).Error; err != nil {
