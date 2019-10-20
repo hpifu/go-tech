@@ -56,5 +56,9 @@ func (s *Service) DELETEArticle(rid string, c *gin.Context) (interface{}, interf
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql update article failed. err: [%v]", err)
 	}
 
+	if err := s.es.DeleteArticle(req.ID); err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("es delete article failed. err: [%v]", err)
+	}
+
 	return req, nil, http.StatusAccepted, nil
 }
