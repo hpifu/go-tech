@@ -53,6 +53,23 @@ func (m *Mysql) SelectArticlesByAuthor(authorID int, offset, limit int) ([]*Arti
 	return articles, nil
 }
 
+func (m *Mysql) SelectArticlesByIDs(ids []int) ([]*Article, error) {
+	var articles []*Article
+
+	if err := m.db.Select("id, title, tags, author, author_id, ctime, utime, brief").
+		Where("id IN (?)", ids).
+		Order("utime DESC").
+		Find(&articles).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return articles, nil
+}
+
 func (m *Mysql) SelectArticleByID(id int) (*Article, error) {
 	article := &Article{}
 	if err := m.db.Where("id=?", id).First(article).Error; err != nil {

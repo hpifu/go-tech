@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/olivere/elastic/v7"
 	"net/http"
-	"reflect"
 	"strconv"
 	"strings"
 )
@@ -63,7 +62,7 @@ func (e *ES) UpdateArticle(article *Article) error {
 	return nil
 }
 
-func (e *ES) SearchArticle(value string, offset int, limit int) ([]*Article, error) {
+func (e *ES) SearchArticle(value string, offset int, limit int) ([]int, error) {
 	query := elastic.NewBoolQuery()
 	for _, val := range split(value) {
 		if len(val) == 0 {
@@ -80,7 +79,7 @@ func (e *ES) SearchArticle(value string, offset int, limit int) ([]*Article, err
 	ctx, cancel := context.WithTimeout(context.Background(), e.timeout)
 	defer cancel()
 	res, err := e.es.Search().
-		Index(e.index).
+		Index(e.index).NoStoredFields().
 		Query(query).
 		From(offset).Size(limit).
 		Do(ctx)
@@ -93,13 +92,14 @@ func (e *ES) SearchArticle(value string, offset int, limit int) ([]*Article, err
 		return nil, nil
 	}
 
-	var ancient Article
-	var ancients []*Article
-	for _, item := range res.Each(reflect.TypeOf(ancient)) {
-		if t, ok := item.(Article); ok {
-			ancients = append(ancients, &t)
+	var ids []int
+	for _, hit := range res.Hits.Hits {
+		id, err := strconv.Atoi(hit.Id)
+		if err != nil {
+			continue
 		}
+		ids = append(ids, id)
 	}
 
-	return ancients, err
+	return ids, err
 }
