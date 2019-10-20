@@ -68,10 +68,10 @@ func (e *ES) SearchArticle(value string, offset int, limit int) ([]int, error) {
 			continue
 		}
 		q := elastic.NewBoolQuery()
-		q.Should(elastic.NewTermQuery("title", val))
-		q.Should(elastic.NewTermQuery("author", val))
-		q.Should(elastic.NewTermQuery("tags", val))
-		q.Should(elastic.NewTermQuery("content", val))
+		q.Should(elastic.NewMatchPhrasePrefixQuery("title", val))
+		q.Should(elastic.NewMatchPhrasePrefixQuery("author", val))
+		q.Should(elastic.NewMatchPhrasePrefixQuery("tags", val))
+		q.Should(elastic.NewMatchPhrasePrefixQuery("content", val))
 		query.Must(q)
 	}
 
