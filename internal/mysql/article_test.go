@@ -16,7 +16,6 @@ func TestMysql_Article(t *testing.T) {
 		article := &Article{
 			Title:    "标题1",
 			AuthorID: 666,
-			Author:   "hatlonely",
 			Content:  "hello world",
 		}
 
@@ -25,7 +24,6 @@ func TestMysql_Article(t *testing.T) {
 			So(m.db.Create(&Article{
 				ID:       i + 1,
 				AuthorID: article.AuthorID,
-				Author:   article.Author,
 				Title:    fmt.Sprintf("%s-%v", article.Title, i+1),
 				Content:  article.Content,
 			}).Error, ShouldBeNil)
@@ -52,7 +50,6 @@ func TestMysql_Article(t *testing.T) {
 				So(a.Title, ShouldEqual, fmt.Sprintf("%s-%v", article.Title, i+1))
 				So(a.AuthorID, ShouldEqual, article.AuthorID)
 				So(a.Content, ShouldEqual, article.Content)
-				So(a.Author, ShouldEqual, article.Author)
 			}
 		})
 
@@ -72,7 +69,6 @@ func TestMysql_UpdateArticle(t *testing.T) {
 		So(m.db.Create(&Article{
 			ID:       12,
 			AuthorID: 456,
-			Author:   "hatlonely",
 			Title:    "标题12",
 			Content:  "hello world",
 		}).Error, ShouldBeNil)

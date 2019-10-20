@@ -22,14 +22,12 @@ func TestMysql_Tag(t *testing.T) {
 			ID:       123,
 			Title:    "标题1",
 			AuthorID: 666,
-			Author:   "hatlonely",
 			Content:  "hello world",
 		}).Error, ShouldBeNil)
 		So(m.db.Create(&Article{
 			ID:       124,
 			Title:    "标题124",
 			AuthorID: 666,
-			Author:   "hatlonely",
 			Content:  "hello world",
 		}).Error, ShouldBeNil)
 		So(m.InsertTag("tag1", 123), ShouldBeNil)

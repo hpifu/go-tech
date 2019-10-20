@@ -8,7 +8,6 @@ import (
 
 type Article struct {
 	ID       int       `gorm:"type:bigint(20) auto_increment;primary_key" json:"id"`
-	Author   string    `gorm:"type:varchar(64);index:author_idx;default:''" json:"author,omitempty"`
 	AuthorID int       `gorm:"type:bigint(20);unique_index:author_title_idx;default:0" json:"authorID,omitempty"`
 	Title    string    `gorm:"type:varchar(128);unique_index:author_title_idx;not null" json:"title,omitempty"`
 	Tags     string    `gorm:"type:varchar(256);default:''" json:"tags,omitempty"`

@@ -63,7 +63,6 @@ func (s *Service) PUTArticle(rid string, c *gin.Context) (interface{}, interface
 
 	reqArticle := &mysql.Article{
 		ID:      req.ID,
-		Author:  req.Author,
 		Tags:    strings.Join(req.Tags, ","),
 		Title:   req.Title,
 		Content: req.Content,
