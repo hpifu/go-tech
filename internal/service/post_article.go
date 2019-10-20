@@ -18,6 +18,7 @@ type Article struct {
 	Author   string   `json:"author,omitempty"`
 	Title    string   `form:"title" json:"title,omitempty"`
 	Tags     []string `form:"tags" json:"tags,omitempty"`
+	Brief    string   `json:"brief,omitempty"`
 	Content  string   `form:"content" json:"content,omitempty"`
 	CTime    string   `json:"ctime,omitempty"`
 	UTime    string   `json:"utime,omitempty"`
@@ -72,6 +73,7 @@ func (s *Service) POSTArticle(rid string, c *gin.Context) (interface{}, interfac
 		Tags:     strings.Join(req.Tags, ","),
 		Title:    req.Title,
 		Content:  req.Content,
+		Brief:    runecut(req.Content, 60),
 		CTime:    time.Now(),
 		UTime:    time.Now(),
 	}); err != nil {

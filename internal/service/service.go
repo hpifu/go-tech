@@ -64,3 +64,20 @@ func (s *Service) GetAccounts(rid string, ids []int) (map[int]*account.Account, 
 
 	return accountMap, nil
 }
+
+func runecut(content string, length int) string {
+	runes := []rune(content)
+	var rs []rune
+	for _, r := range runes {
+		if _, ok := map[rune]struct{}{
+			'#': {}, '`': {}, ' ': {}, '\n': {}, '\r': {},
+		}[r]; !ok {
+			rs = append(rs, r)
+		}
+	}
+	if len(rs) >= length {
+		return string(rs[0:length])
+	}
+
+	return string(rs)
+}

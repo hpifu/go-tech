@@ -61,7 +61,7 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 			Author:   author,
 			Title:    article.Title,
 			Tags:     strings.Split(article.Tags, ","),
-			Content:  article.Content,
+			Brief:    article.Brief,
 			CTime:    article.CTime.Format(time.RFC3339),
 			UTime:    article.UTime.Format(time.RFC3339),
 			Avatar:   avatar,

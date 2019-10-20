@@ -12,13 +12,13 @@ Feature: GET /articles/author/:authorID
         Given redis del "godtoken"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (1, "标题1", 777, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, author, brief, content)
+            VALUES (1, "标题1", 777, "hatlonely", "hello", "hello world")
             """
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (2, "标题2", 666, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, author, brief, content)
+            VALUES (2, "标题2", 666, "hatlonely", "hello", "hello world")
             """
         Given redis set string "godtoken"
             """
@@ -47,7 +47,7 @@ Feature: GET /articles/author/:authorID
                         "title": "标题2",
                         "authorID": 666,
                         "author": "hatlonely",
-                        "content": "hello world"
+                        "brief": "hello"
                     }
                 ]
             }

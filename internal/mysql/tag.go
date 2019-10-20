@@ -85,7 +85,7 @@ func (m *Mysql) SelectArticlesByTag(tag string, offset, limit int) ([]*Article, 
 	if err := m.db.Table("tags").
 		Select(`articles.id AS id, articles.title AS title, articles.tags AS tags, 
 			articles.author AS author, articles.author_id AS author_id, articles.ctime AS ctime, 
-			articles.utime AS utime, articles.content AS content`).
+			articles.utime AS utime, articles.brief AS brief`).
 		Joins("LEFT JOIN articles ON articles.id=tags.article_id").
 		Where("tags.tag=?", tag).
 		Order("articles.utime DESC").
