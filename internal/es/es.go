@@ -17,22 +17,22 @@ var articleMapping = `{
 			"title": {
 				"type": "text",
 				"analyzer": "ik_max_word",
-				"search_analyzer": "ik_smart"
+				"search_analyzer": "ik_max_word"
 			},
 			"author": {
 				"type": "text",
 				"analyzer": "ik_max_word",
-				"search_analyzer": "ik_smart"
+				"search_analyzer": "ik_max_word"
 			},
 			"tags": {
 				"type": "text",
 				"analyzer": "ik_max_word",
-				"search_analyzer": "ik_smart"
+				"search_analyzer": "ik_max_word"
 			},
 			"content": {
 				"type": "text",
 				"analyzer": "ik_max_word",
-				"search_analyzer": "ik_smart"
+				"search_analyzer": "ik_max_word"
 			}
 		}
 	}
