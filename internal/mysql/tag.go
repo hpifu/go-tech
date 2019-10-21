@@ -109,7 +109,7 @@ type TagCountPair struct {
 func (m *Mysql) CountTag() ([]*TagCountPair, error) {
 	var tagCloud []*TagCountPair
 	if err := m.db.Raw(`
-	SELECT tag, count(*) AS count FROM tags GROUP BY tag ORDER BY count DESC LIMIT 50;
+	SELECT tag, count(*) AS count FROM tags GROUP BY tag ORDER BY count DESC LIMIT 100;
 `).Scan(&tagCloud).Error; err != nil {
 		return nil, err
 	}
