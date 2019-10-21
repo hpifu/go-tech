@@ -21,21 +21,31 @@ func NewMysql(uri string) (*Mysql, error) {
 
 	if !db.HasTable(&Article{}) {
 		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&Article{}).Error; err != nil {
-			panic(err)
+			return nil, err
 		}
 	} else {
 		if err := db.AutoMigrate(&Article{}).Error; err != nil {
-			panic(err)
+			return nil, err
 		}
 	}
 
 	if !db.HasTable(&Tag{}) {
 		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&Tag{}).Error; err != nil {
-			panic(err)
+			return nil, err
 		}
 	} else {
 		if err := db.AutoMigrate(&Tag{}).Error; err != nil {
-			panic(err)
+			return nil, err
+		}
+	}
+
+	if !db.HasTable(&Likeview{}) {
+		if err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&Likeview{}).Error; err != nil {
+			return nil, err
+		}
+	} else {
+		if err := db.AutoMigrate(&Likeview{}).Error; err != nil {
+			return nil, err
 		}
 	}
 
