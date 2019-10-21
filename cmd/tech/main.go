@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/hpifu/go-tech/internal/es"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,11 +17,13 @@ import (
 	godtoken "github.com/hpifu/go-godtoken/api"
 	"github.com/hpifu/go-kit/hhttp"
 	"github.com/hpifu/go-kit/logger"
+	"github.com/hpifu/go-tech/internal/es"
 	"github.com/hpifu/go-tech/internal/mysql"
 	"github.com/hpifu/go-tech/internal/service"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/keepalive"
 )
 
 // AppVersion name
@@ -96,9 +97,15 @@ func main() {
 	)
 
 	// init godtoken client
+	var kacp = keepalive.ClientParameters{
+		Time:                10 * time.Second, // send pings every 10 seconds if there is no activity
+		Timeout:             time.Second,      // wait 1 second for ping ack before considering the connection dead
+		PermitWithoutStream: true,             // send pings even without active streams
+	}
 	conn, err := grpc.Dial(
 		config.GetString("godtoken.address"),
 		grpc.WithInsecure(),
+		grpc.WithKeepaliveParams(kacp),
 	)
 	if err != nil {
 		panic(err)
