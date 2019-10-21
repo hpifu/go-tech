@@ -1,4 +1,4 @@
-Feature: articles 测试
+Feature: /articles
 
     Scenario: articles
         Given mysql 执行

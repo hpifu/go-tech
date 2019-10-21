@@ -46,6 +46,15 @@ func (s *Service) GETArticle(rid string, c *gin.Context) (interface{}, interface
 		}
 	}
 
+	likeview, err := s.db.SelectLikeviewByID(article.ID)
+	if err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql select likeview filed. err: [%v]", err)
+	}
+
+	if err := s.db.View(article.ID); err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("mysql view failed. err: [%v]", err)
+	}
+
 	return req, &Article{
 		ID:       article.ID,
 		AuthorID: article.AuthorID,
@@ -56,5 +65,7 @@ func (s *Service) GETArticle(rid string, c *gin.Context) (interface{}, interface
 		CTime:    article.CTime.Format(time.RFC3339),
 		UTime:    article.UTime.Format(time.RFC3339),
 		Avatar:   avatar,
+		Like:     likeview.Like,
+		View:     likeview.View,
 	}, http.StatusOK, nil
 }

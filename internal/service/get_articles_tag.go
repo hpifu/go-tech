@@ -51,6 +51,11 @@ func (s *Service) GETArticlesTag(rid string, c *gin.Context) (interface{}, inter
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get accounts failed. err: [%v]", err)
 	}
 
+	likeviewMap, err := s.db.SelectLikeviewsByArticles(articles)
+	if err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("get likeviews failed. err: [%v]", err)
+	}
+
 	var res GETArticlesTagRes
 	for _, article := range articles {
 		var avatar string
@@ -58,6 +63,12 @@ func (s *Service) GETArticlesTag(rid string, c *gin.Context) (interface{}, inter
 		if a, ok := accountMap[article.AuthorID]; ok {
 			avatar = a.Avatar
 			author = strings.Split(a.Email, "@")[0]
+		}
+		like := 0
+		view := 0
+		if lv, ok := likeviewMap[article.ID]; ok {
+			like = lv.Like
+			view = lv.View
 		}
 
 		res = append(res, &Article{
@@ -70,6 +81,8 @@ func (s *Service) GETArticlesTag(rid string, c *gin.Context) (interface{}, inter
 			CTime:    article.CTime.Format(time.RFC3339),
 			UTime:    article.UTime.Format(time.RFC3339),
 			Avatar:   avatar,
+			Like:     like,
+			View:     view,
 		})
 	}
 

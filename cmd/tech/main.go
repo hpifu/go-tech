@@ -142,6 +142,7 @@ func main() {
 	r.DELETE("article/:id", d.Decorate(svc.DELETEArticle))
 	r.GET("/tagcloud", d.Decorate(svc.GETTagCloud))
 	r.GET("/search", d.Decorate(svc.Search))
+	r.POST("/like/:id", d.Decorate(svc.Like))
 
 	infoLog.Infof("%v init success, setting: %v", os.Args[0], config.AllSettings())
 

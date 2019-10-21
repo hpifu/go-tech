@@ -36,14 +36,19 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 		return req, nil, http.StatusNoContent, nil
 	}
 
-	var ids []int
+	var aids []int
 	for _, article := range articles {
-		ids = append(ids, article.AuthorID)
+		aids = append(aids, article.AuthorID)
 	}
 
-	accountMap, err := s.GetAccounts(rid, ids)
+	accountMap, err := s.GetAccounts(rid, aids)
 	if err != nil {
 		return req, nil, http.StatusInternalServerError, fmt.Errorf("get accounts failed. err: [%v]", err)
+	}
+
+	likeviewMap, err := s.db.SelectLikeviewsByArticles(articles)
+	if err != nil {
+		return req, nil, http.StatusInternalServerError, fmt.Errorf("get likeviews failed. err: [%v]", err)
 	}
 
 	var as GETArticlesRes
@@ -53,6 +58,12 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 		if a, ok := accountMap[article.AuthorID]; ok {
 			avatar = a.Avatar
 			author = strings.Split(a.Email, "@")[0]
+		}
+		like := 0
+		view := 0
+		if lv, ok := likeviewMap[article.ID]; ok {
+			like = lv.Like
+			view = lv.View
 		}
 
 		as = append(as, &Article{
@@ -65,6 +76,8 @@ func (s *Service) GETArticles(rid string, c *gin.Context) (interface{}, interfac
 			CTime:    article.CTime.Format(time.RFC3339),
 			UTime:    article.UTime.Format(time.RFC3339),
 			Avatar:   avatar,
+			Like:     like,
+			View:     view,
 		})
 	}
 
