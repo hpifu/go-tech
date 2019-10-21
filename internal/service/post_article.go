@@ -24,8 +24,8 @@ type Article struct {
 	CTime    string   `json:"ctime,omitempty"`
 	UTime    string   `json:"utime,omitempty"`
 	Avatar   string   `json:"avatar,omitempty"`
-	View     int      `json:"view,omitempty"`
-	Like     int      `json:"like,omitempty"`
+	View     int      `json:"view"`
+	Like     int      `json:"like"`
 }
 
 type POSTArticleReq Article
