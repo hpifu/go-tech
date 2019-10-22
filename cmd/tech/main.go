@@ -159,8 +159,8 @@ func main() {
 		warnLog.Errorf("%v shutdown fail or timeout", os.Args[0])
 		return
 	}
-	warnLog.Out.(*rotatelogs.RotateLogs).Close()
-	accessLog.Out.(*rotatelogs.RotateLogs).Close()
+	_ = warnLog.Out.(*rotatelogs.RotateLogs).Close()
+	_ = accessLog.Out.(*rotatelogs.RotateLogs).Close()
 	infoLog.Errorf("%v shutdown success", os.Args[0])
-	infoLog.Out.(*rotatelogs.RotateLogs).Close()
+	_ = infoLog.Out.(*rotatelogs.RotateLogs).Close()
 }
