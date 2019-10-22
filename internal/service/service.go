@@ -11,16 +11,15 @@ import (
 	"time"
 )
 
-var InfoLog *logrus.Logger = logrus.New()
-var WarnLog *logrus.Logger = logrus.New()
-var AccessLog *logrus.Logger = logrus.New()
-
 type Service struct {
 	db              *mysql.Mysql
 	es              *es.ES
 	accountCli      *account.Client
 	godtokenCli     godtoken.ServiceClient
 	godtokenTimeout time.Duration
+	infoLog         *logrus.Logger
+	warnLog         *logrus.Logger
+	accessLog       *logrus.Logger
 }
 
 func NewService(
@@ -35,7 +34,16 @@ func NewService(
 		accountCli:      accountCli,
 		godtokenCli:     godtokenCli,
 		godtokenTimeout: 200 * time.Millisecond,
+		infoLog:         logrus.New(),
+		warnLog:         logrus.New(),
+		accessLog:       logrus.New(),
 	}
+}
+
+func (s *Service) SetLogger(infoLog, warnLog, accessLog *logrus.Logger) {
+	s.infoLog = infoLog
+	s.warnLog = warnLog
+	s.accessLog = accessLog
 }
 
 func (s *Service) GetAccounts(rid string, ids []int) (map[int]*account.Account, error) {

@@ -54,21 +54,10 @@ func main() {
 	}
 
 	// init logger
-	infoLog, err := logger.NewTextLoggerWithViper(config.Sub("logger.infoLog"))
+	infoLog, warnLog, accessLog, err := logger.NewLoggerGroupWithViper(config.Sub("logger"))
 	if err != nil {
 		panic(err)
 	}
-	warnLog, err := logger.NewTextLoggerWithViper(config.Sub("logger.warnLog"))
-	if err != nil {
-		panic(err)
-	}
-	accessLog, err := logger.NewJsonLoggerWithViper(config.Sub("logger.accessLog"))
-	if err != nil {
-		panic(err)
-	}
-	service.InfoLog = infoLog
-	service.WarnLog = warnLog
-	service.AccessLog = accessLog
 
 	// init mysql
 	db, err := mysql.NewMysql(config.GetString("mysql.uri"))
@@ -115,6 +104,7 @@ func main() {
 
 	// init services
 	svc := service.NewService(db, esclient, accountCli, godtokenCli)
+	svc.SetLogger(infoLog, warnLog, accessLog)
 
 	// init gin
 	origins := config.GetStringSlice("service.allowOrigins")
