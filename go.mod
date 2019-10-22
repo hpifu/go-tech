@@ -41,4 +41,5 @@ require (
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 	github.com/spf13/viper v1.4.0
 	google.golang.org/grpc v1.21.0
+	gopkg.in/sohlich/elogrus.v7 v7.0.0
 )

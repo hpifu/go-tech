@@ -21,9 +21,12 @@ import (
 	"github.com/hpifu/go-tech/internal/mysql"
 	"github.com/hpifu/go-tech/internal/service"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/olivere/elastic/v7"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
+	"gopkg.in/sohlich/elogrus.v7"
 )
 
 // AppVersion name
@@ -58,6 +61,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	client, err := elastic.NewClient(
+		elastic.SetURL(config.GetString("es.uri")),
+		elastic.SetSniff(false),
+	)
+	if err != nil {
+		panic(err)
+	}
+	hook, err := elogrus.NewAsyncElasticHook(client, "go-tech", logrus.InfoLevel, "go-tech-log")
+	if err != nil {
+		panic(err)
+	}
+	accessLog.Hooks.Add(hook)
 
 	// init mysql
 	db, err := mysql.NewMysql(config.GetString("mysql.uri"))
