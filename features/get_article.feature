@@ -12,13 +12,13 @@ Feature: article 测试
         Given redis del "godtoken"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (1, "标题1", 666, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (1, "标题1", 666, "hello world")
             """
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (2, "标题2", 666, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (2, "标题2", 666, "hello world")
             """
         Given mysql 执行
             """
@@ -37,7 +37,6 @@ Feature: article 测试
                     "id": 1,
                     "title": "标题1",
                     "authorID": 666,
-                    "author": "hatlonely",
                     "content": "hello world"
                 }
             }
@@ -50,7 +49,6 @@ Feature: article 测试
                     "id": 2,
                     "title": "标题2",
                     "authorID": 666,
-                    "author": "hatlonely",
                     "content": "hello world"
                 }
             }

@@ -8,8 +8,8 @@ Feature: DELETE /article
         Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (456, "标题1", 123, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (456, "标题1", 123, "hello world")
             """
         Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
             """
@@ -42,8 +42,8 @@ Feature: DELETE /article
         Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (456, "标题1", 123, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (456, "标题1", 123, "hello world")
             """
         Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
             """
@@ -80,8 +80,8 @@ Feature: DELETE /article
         Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (456, "标题1", 123, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (456, "标题1", 123, "hello world")
             """
         Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
             """

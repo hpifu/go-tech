@@ -8,8 +8,8 @@ Feature: PUT /article
         Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (456, "标题1", 123, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (456, "标题1", 123, "hello world")
             """
         Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
             """
@@ -39,7 +39,6 @@ Feature: PUT /article
                 "title": "标题1",
                 "author_id": 123,
                 "tags": "c++,golang",
-                "author": "hatlonely",
                 "content": "hello world"
             }
             """
@@ -62,7 +61,6 @@ Feature: PUT /article
                 "title": "标题abc",
                 "author_id": 123,
                 "tags": "c++,golang",
-                "author": "hatlonely",
                 "content": "hello golang"
             }
             """
@@ -80,8 +78,8 @@ Feature: PUT /article
         Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (456, "标题1", 123, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (456, "标题1", 123, "hello world")
             """
         Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
             """
@@ -124,8 +122,8 @@ Feature: PUT /article
         Given redis del "d571bda90c2d4e32a793b8a1ff4ff984"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, content)
-            VALUES (456, "标题1", 123, "hatlonely", "hello world")
+            INSERT INTO articles (id, title, author_id, content)
+            VALUES (456, "标题1", 123, "hello world")
             """
         Given redis set object "d571bda90c2d4e32a793b8a1ff4ff984"
             """

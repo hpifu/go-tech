@@ -12,13 +12,13 @@ Feature: /articles
         Given redis del "godtoken"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, brief, content)
-            VALUES (1, "标题1", 666, "hatlonely", "hello", "hello world")
+            INSERT INTO articles (id, title, author_id, brief, content)
+            VALUES (1, "标题1", 666, "hello", "hello world")
             """
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, brief, content)
-            VALUES (2, "标题2", 666, "hatlonely", "hello", "hello world")
+            INSERT INTO articles (id, title, author_id, brief, content)
+            VALUES (2, "标题2", 666, "hello", "hello world")
             """
         Given redis set string "godtoken"
             """

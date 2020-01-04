@@ -7,13 +7,13 @@ Feature: GET /articles/tag/:tag
         Given mysql 执行 "DELETE FROM account.accounts WHERE id IN (666)"
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, brief, content)
-            VALUES (1, "标题1", 777, "hatlonely", "hello", "hello world")
+            INSERT INTO articles (id, title, author_id, brief, content)
+            VALUES (1, "标题1", 777, "hello", "hello world")
             """
         Given mysql 执行
             """
-            INSERT INTO articles (id, title, author_id, author, brief, content)
-            VALUES (2, "标题2", 666, "hatlonely", "hello", "hello world")
+            INSERT INTO articles (id, title, author_id, brief, content)
+            VALUES (2, "标题2", 666, "hello", "hello world")
             """
         Given mysql 执行 "INSERT INTO tags (id, article_id, tag) VALUES (11, 1, 'tag1')"
         Given mysql 执行 "INSERT INTO tags (id, article_id, tag) VALUES (22, 2, 'tag2')"
@@ -41,7 +41,6 @@ Feature: GET /articles/tag/:tag
                         "id": 2,
                         "title": "标题2",
                         "authorID": 666,
-                        "author": "hatlonely",
                         "brief": "hello"
                     }
                 ]
